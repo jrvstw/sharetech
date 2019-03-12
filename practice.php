@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <html>
     <head>
         <title> 家瑋的練習題 </title>
@@ -25,15 +26,33 @@ for ($i = 0; $i < 10; $i++)
 
 ?>
 
-<INPUT TYPE=TEXT NAME="name" VALUE="Glen Morris">
+<form method="get">
+    <input type="text" name="guess">
+    <input type="submit">
+</form>
 
 <?php
-echo "name is $name<br>";
 
-echo "</p><p> 3. <br><br>";
+$_SESSION[1] = $_GET[guess];
+$tmp = 1;
+//if (isset($_POST[guess])
+    $tmp += 1;
+echo $tmp;
+//echo "you input $_SESSION[1]";
 
-$n = 200;
-$k = 200;
+?>
+
+</p><p> 3. <br><br>
+
+<form method="get">
+    Lights: <input type="text" name="lights">
+<br>
+    People: <input type="text" name="people">
+    <input type="submit">
+</form>
+<?php
+$n = $_GET[lights];
+$k = $_GET[people];
 
 for ($i = 1; $i <= $n; $i++) {
     $light = false;
@@ -43,40 +62,58 @@ for ($i = 1; $i <= $n; $i++) {
     if ($light == true)
         echo "$i ";
 }
-
-echo "</p><p> 4. <br><br>";
-
-$input = "abcdefghijklmnopqrstuvwxyz";
+?>
+</p><p> 4. <br><br>
+<form method="get">
+    String: <input type="text" name="string">
+    <input type="submit">
+</form>
+<?php
+$input = $_GET[string];
 while (strlen($input) > 0) {
     echo substr($input, -1);
     $input = substr($input, 0, -1);
 }
 
-echo "</p><p> 5. <br><br>";
-
-$width = 5;
-
-$n = $width * $width;
-$col = ($width + 1) / 2;
-$row = 0;
-
-for ($i = 1; $i <= $n; $i++) {
-    $matrix[$row][$col] = $i;
-    if ($i % $width == 0)
-        $row--;
-    $col += 1;
-    $row = ($row + $n - 1) % $n;
-}
-
-for ($i = 0; $i < 5; $i++) {
-    for ($j = 0; $j < 5; $j++) {
-        echo $matrix[$row][$col];
-        echo "  ";
-    }
-    echo "\n";
-}
-
 ?>
 
+</p><p> 5. <br><br>
+<form method="get">
+    Width: <input type="text" name="width">
+    <input type="submit">
+</form>
+<?php
+$width = $_GET[width];
+
+$n = $width * $width;
+$col = ($width - 1) / 2;
+$row = 0;
+if ($width % 2 == 0 || $width > 25)
+    echo "invalid number<br>";
+else {
+
+    for ($i = 1; $i <= $n; $i++) {
+        $matrix[$row][$col] = $i;
+        if ($i % $width == 0) {
+            $row = ($row + 1) % $width;
+        } else {
+            $col = ($col + 1) % $width;
+            $row = ($row + $width - 1) % $width;
+        }
+    }
+
+    echo "<table border=1 bordercolor=#000000 cellpadding=5>";
+    for ($i = 0; $i < $width; $i++) {
+        echo "<tr>";
+        for ($j = 0; $j < $width; $j++) {
+            echo "<td bordercolor=#000000 width=30>";
+            echo $matrix[$i][$j];
+            echo "</td>  ";
+        }
+        echo "<tr>";
+    }
+    echo "</table>";
+}
+?>
     </body>
 </html>
