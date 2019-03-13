@@ -1,0 +1,47 @@
+
+<html>
+    <head>
+        <title> 家瑋的練習題: 2 </title>
+    </head>
+    <body>
+
+<p> 2.<br><br>
+
+<?php
+session_start();
+
+    for ($i = 0; $i < 10; $i++)
+        $num[$i] = $i;
+    for ($i = 0; $i < 4; $i++) {
+        $random = rand($i, 9);
+        $swp = $num[$i];
+        $num[$i] = $num[$random];
+        $num[$random] = $swp;
+    }
+    for ($i = 0; $i < 10; $i++)
+        echo "\$num[$i] = $num[$i] <br>";
+
+    if (isset($_POST[guess])) {
+        $_SESSION['info'][] = array($_POST[guess] => "1324");
+    }
+
+    if (isset($_SESSION['info'])) {
+        for ($i = 0; $i < count($_SESSION['info']); $i++) {
+            foreach ($_SESSION['info'][$i] as $i => $guess) {
+                echo '<p>' . $i . '<br>';
+                echo $guess . '</p>';
+            }
+        }
+    }
+    session_destroy();
+?>
+
+<form action="#" method="post">
+    <input type="text" name="guess">
+    <input type="submit" value="play">
+    <input type="submit" value="play again">
+</form>
+</p>
+
+    </body>
+</html>
