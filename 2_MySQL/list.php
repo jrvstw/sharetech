@@ -21,46 +21,49 @@
 </form>
 
 <?php
-echo "hihi
-wewe";
-$searchType = $_POST['type'];
-$searchName = $_POST['name'];
-
+/*
+ * connect to MySQL
+ */
 $mysqli = new mysqli('localhost', 'sharetechrd33', '27050888') or
     die("Connection failed: " . $conn->connect_error);
-//if ($conn->connect_error)
-
 $mysqli->select_db("work2") or
-    die("connection to contact database failed");
+    die("connection to database failed");
 
-
+/*
+ * draw table
+ */
 echo "<table border=1 bordercolor=#000000>";
 echo "<tr><td>Id</td><td>Name</td><td>Gender</td><td>Phone</td><td>Birth";
 echo "day</td><td>Address</td><td>E-mail</td><td>Edit/Delete</td></tr>";
 
-if ($searchName == NULL)
+if (isset($_POST['name']) && $_POST['name'] != "")
+    $result = $mysqli->query("select * from contact where " .
+                             $_POST['type'] . "='" . $_POST['name'] . "'")
+        or die("query failed");
+else
     $result = $mysqli->query("select * from contact") or
     die("query failed");
-else
-    $result = $mysqli->query("select * from contact where $searchType=\"$searchName\"") or
-    die("query failed");
+
+// draw each rows
 for ($i = 0; $i < $result->num_rows; $i++) {
     echo "<tr>";
     $result->data_seek($i);
     $row = $result->fetch_row();
-    for ($j = 0; $j < $result->field_count; $j++)
-        echo "<td>$row[$j]</td>";
-?>
-<td>
-    <input type="submit" value="Edit">
-    <input type="submit" value="Delete">
-</td>
-<?php
-    echo "</tr>";
+    echo "<td>" . sprintf('%03d', $row[0]) . "</td>";
+    for ($j = 1; $j < $result->field_count; $j++)
+        echo "<td>" . $row[$j] . "</td>";
+    echo "<td>
+        <form action='edit.php' style='display:inline' method='post'>
+        <button name='edit' value='$row[0]' type='submit'>Edit</button>
+        </form>
+        <form action='delete.php' style='display:inline' method='post'>
+        <button name='delete' value='$row[0]' type='submit'>Delete</button>
+        </form>";
+echo "</td></tr>";
 }
 
-$result->free();
 echo "</table>";
+//$result->free();
 $mysqli->close();
 ?>
 
