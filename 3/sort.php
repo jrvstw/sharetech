@@ -1,5 +1,4 @@
 <?php
-echo "hi";
 $lines=file("books.txt");
 foreach ($lines as $line_num => $line) {
     //echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) .  "<br />\n";
@@ -9,7 +8,8 @@ unset($line);
 
 function cmp($a, $b)
 {
-    $value = $a[$_GET['sort']] - $b[$_GET['sort']];
+    $value = strnatcmp($a[$_GET['sort']], $b[$_GET['sort']]);
+
     if ($value == 0)
         return 0;
     if ($value > 0 xor $_GET['order'] == 'dsc')
@@ -18,7 +18,7 @@ function cmp($a, $b)
         return -1;
 }
 
-print_r($sheet);
+//print_r($sheet);
 uasort($sheet, 'cmp');
 
 echo "<br><br>";
@@ -29,7 +29,7 @@ foreach ($sheet as $line_num => $line) {
         $current .= $field . ",";
     $current = rtrim($current, ",") . "\n";
 }
-echo $current;
+//echo $current;
 if (file_put_contents('books.txt', $current) == true)
     echo "ok";
 else
