@@ -1,4 +1,0 @@
-fwa,ww,exx,d,133,fffffff
-e,wwa,www,d,122,afw
-eeeee,w,w,a,234,11123
-2342111,flag,c,Jarvis,500,2019-03-21
