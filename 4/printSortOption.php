@@ -15,6 +15,7 @@ foreach ($columnName as $key => $value)
 			echo "<option value='$key'>$value</option>";
 	}
 echo '</select>';
+unset($value);
 
 echo '方向<select name="order" onchange="this.form.submit()">';
 foreach ($orderName as $key => $value) {
@@ -23,6 +24,7 @@ foreach ($orderName as $key => $value) {
 	else
 		echo "<option value='$key'>$value</option>";
 }
+unset($value);
 echo '</select>';
 
 echo '</form>';

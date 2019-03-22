@@ -9,6 +9,8 @@
 			<form action="export.php" style="display:inline" method="get">
 				資料匯出
 				<button name="export" value="csv" type="submit">匯出</button>
+				<input type='hidden' name='sort' value=<?php echo $_GET['sort']; ?>></input>
+				<input type='hidden' name='order' value=<?php echo $_GET['order']; ?>></input>
 			</form>
 			<span style="float:right">
 				<?php include("printSortOption.php"); ?>
