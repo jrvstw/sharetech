@@ -1,15 +1,15 @@
 <html>
 	<head>
-		<title>Update</title>
+		<title><?php echo strtoupper($_GET['type']); ?></title>
 	</head>
 	<body>
 		<center>
 			<form method="post">
 				<table border=1>
-					<?php include("updateForm.php"); ?>
+					<?php include("printForm.php"); ?>
 				</table>
 				<button type="submit" name="type" value="update">
-					Update
+					<?php echo strtoupper($_GET['type']); ?>
 				</button>
 			</form>
 		</center>

@@ -11,7 +11,7 @@
 				<button name="export" value="csv" type="submit">匯出</button>
 			</form>
 			<span style="float:right">
-				<?php include("sortOption.php"); ?>
+				<?php include("printSortOption.php"); ?>
 			</span>
 		</div>
 		<table style="width:800px" border="1">
@@ -24,10 +24,11 @@
 				<td>發行日</td>
 				<td>編輯/刪除</td>
 			</tr>
-			<?php include("showList.php"); ?>
+			<?php include("printList.php"); ?>
 		</table>
 		<form action="update.php" method="get">
 			<button name="type" value="add" type="submit">ADD</button>
+			<input type='hidden' name='userSubmit' value=0></input>
 		</form>
 	</center>
 </body>

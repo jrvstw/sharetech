@@ -24,13 +24,14 @@ for ($row = 0; $row < $result->num_rows; $row++) {
         echo "<td>" . $field[$col] . "</td>";
 	echo "<td>
 			  <form action='update.php' style='display:inline' method='get'>
+				  <button name='type' value='edit' type='submit'> Edit </button>
 				  <input type='hidden' name='id' value='$field[0]'></input>
-				  <button name='type' value='edit' type='submit'>
-					  Edit
-				  </button>
+				  <input type='hidden' name='userSubmit' value=0></input>
 			  </form>
-        	  <form action='delete.php' style='display:inline' method='get'>
-				  <button name='id' value='$field[0]' type='submit'>
+        	  <form action='deleted.php' style='display:inline' method='get'>
+				  <button name='id' value='$field[0]' type='submit'
+					  onClick=\"javascript:return confirm
+					  ('are you sure you want to delete this?');\">
 					  Delete
 				  </button>
 			  </form>
