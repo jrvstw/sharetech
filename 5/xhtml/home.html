@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>書籍管理系統</title>
+	<style type="text/css">
+td.style1
+{
+	border-style:solid;
+	border-color:gray;
+	border-width:1px;
+		cellspacing=0;
+		cellpadding=0;
+		padding=2;
+		margin=2;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+<body>
+<font face="DFKai-sb">
+	<center>
+		<div style="width:800px" align="right">
+			<form action="export.php" method="get">
+				資料匯出
+				<button name="export" value="csv" type="submit">匯出</button>
+				<input type='hidden' name='sort' value=<?php echo $_GET['sort']; ?>></input>
+				<input type='hidden' name='order' value=<?php echo $_GET['order']; ?>></input>
+			</form>
+			<div style="width:800px" align="right">
+				<?php include("printSortOption.php"); ?>
+			</div>
+		</div>
+		<table style="border:5px #BBB solid; width:800px; border-collapse:collapse" border="1">
+			<tr>
+				<td style="border:1px;"><b>ISBN</b></td>
+				<td style="border:1px;"><b>出版社</b></td>
+				<td style="border:1px;"><b>書名</b></td>
+				<td style="border:1px;"><b>作者</b></td>
+				<td style="border:1px;"><b>定價</b></td>
+				<td style="border:1px;"><b>發行日</b></td>
+				<td style="border:1px;"><b>編輯/刪除</b></td>
+			</tr>
+			<?php include("printList.php"); ?>
+		</table>
+		<form action="update.php" method="get">
+			<button name="type" value="add" type="submit"
+				style="background-color:#66FF99">ADD</button>
+			<input type='hidden' name='userSubmit' value=0></input>
+		</form>
+	</center>
+</font>
+</body>
+</html>
+
