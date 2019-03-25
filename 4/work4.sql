@@ -31,7 +31,7 @@ CREATE TABLE `books` (
   `price` int(8) NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (1,'957-442-243-7','flag','Firewall management','William Sher',560,'2006-07-02'),(2,'957-442-217-8','flag','PHP libraries','Cannon Wang',580,'2004-06-13'),(8,'111-222-333-4','æ‰“ä¸­æ–‡','æ‰“ç¬¦è™Ÿï¼Œ#$%^&*\"\"!!~@c','æ‰“æ•¸å­—1234',712,'2010-09-09'),(9,'111-222-333-4','bc','zxcvcxz','Jarvisa',500,'2019-03-21');
+INSERT INTO `books` VALUES (1,'957-442-243-7','flag','Firewall','William',560,'2009-07-02'),(2,'957-442-217-8','flag','PHP libraries','Cannon Wang',580,'2004-06-13'),(8,'111-222-333-4','打中文','打符號，#$%^&*\"\"!!~@c','打數字1234',712,'2010-09-09'),(9,'111-222-333-4','b\'c\"c','\"hello','Jarvis\"',501,'2019-03-21'),(13,'111-222-333-4','中文','中文名','中文,',500,'2019-03-05');
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-22 18:15:44
+-- Dump completed on 2019-03-25 14:26:18
