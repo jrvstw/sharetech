@@ -3,7 +3,7 @@
 header("Content-Type:text/html; charset=utf-8");
 include("COLUMNS.php");
 include("class/MyTable.php");
-$bookTable = new MyTable();
+$bookTable = new MyTable("books");
 $writeData = array("isbn" => "",
 				   "publisher" => "",
 				   "name" => "",
@@ -21,7 +21,7 @@ if ($_POST['userSubmit'] == 1) {
 	unset($value);
 } elseif ($_GET['type'] == 'edit') {
 	foreach ($writeData as $col => &$value) {
-		$value = $bookTable->get_field($_GET['id'], $col);
+		$value = $bookTable->get_field($col, "id", $_GET['id']);
 	}
 	unset($value);
 }

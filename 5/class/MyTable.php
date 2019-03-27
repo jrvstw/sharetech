@@ -15,8 +15,9 @@ class MyTable
 	 * private function query($query)
 	 * private function to_array($result)
 	 * public function get_count()
+	 * public function get_pages()
 	 * public function get_columns()
-	 * public function get_field($id, $col)
+	 * public function get_field($col, $filter, $value)
 	 * public function get_table($sort, $order, $page)
 	 * public function add_entry($writeData)
 	 * public function edit_by_id($writeData, $id)
@@ -24,9 +25,9 @@ class MyTable
 	 */
 
 
-	function __construct()
+	function __construct($tb)
 	{
-		$this->tbName = "books";
+		$this->tbName = $tb;
 		$this->dbName = "work4";
 		$this->hostName = "localhost";
 		$this->userName = "jarvis";
@@ -65,6 +66,18 @@ class MyTable
 		return $field[0];
 	}
 
+	public function get_pages()
+	{
+		$rowsPerPage = 16;
+		$result = $this->query("select count(*) from ". $this->tbName);
+		$field = $result->fetch_row();
+		$count = $field[0];
+		if ($count == 0)
+			return 0;
+		else
+			return intdiv($count - 1, $rowsPerPage) + 1;
+	}
+
 	public function get_columns()
 	{
 		$result = $this->query("show columns from " . $this->tbName);
@@ -76,28 +89,34 @@ class MyTable
 		return $columns;
 	}
 
-	public function get_field($id, $col)
+	public function get_field($col, $filter, $value)
 	{
-		$query = "select " . $col . " from books where id=" .  $id;
+		$value = str_replace("\\", "\\\\", $value);
+		$value = str_replace("'", "\'", $value);
+		$query = "select " . $col . " from " . $this->tbName . " where " . $filter . "='" .  $value . "'";
 		$result = $this->query($query) or die("query failed: " . $query);
 		$field = $result->fetch_row();
-		return $field[0];
+		if ($field == null)
+			return null;
+		else
+			return $field[0];
 	}
 
-	public function get_table($sort, $order, $range)
+	public function get_table($range, $sort, $order, $page)
 	{
 		$rowsPerPage = 16;
 
 		$query = "select * from books";
 
-		if (empty($range) == false) {
-			if (is_array($range)) {
-				$query .= " where id in (";
-				foreach ($range as $key => $value)
-					$query .= $value . ",";
-				$query = substr($query, 0 , -1) . ")";
-			}
-		}
+		if (empty($range))
+			;
+		elseif (is_array($range)) {
+			$query .= " where id in (";
+			foreach ($range as $key => $value)
+				$query .= $value . ",";
+			$query = substr($query, 0 , -1) . ")";
+		} else
+			die("Query failed with range = " . $range);
 
 		if (empty($sort) == false) {
 			$query .= " order by " . $sort;
@@ -105,11 +124,16 @@ class MyTable
 				$query .= " desc";
 		}
 
-		if (empty($range) == false and is_array($range) == false)
-				$query .= " limit " . ($range - 1) * $rowsPerPage . "," .
-					$rowsPerPage;
+		if ($page == "")
+			$page = 1;
+		if (preg_match('/^[1-9][0-9]*$/', $page))
+			$query .= " limit " . ($page - 1) * $rowsPerPage . "," .  $rowsPerPage;
+		elseif ($page == -1)
+			;
+		else
+				die("Query failed with page = " . $page);
 
-		$result = $this->query($query) or die("query failed: " . $query);
+		$result = $this->query($query) or die("Query failed: " . $query);
 		return $this->to_array($result);
 
 	}

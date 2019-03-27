@@ -31,10 +31,39 @@ unset($shown);
 echo '</select>';
 
 /*
- * prints page option.
+ * prints page option if there are more than 1 pages.
  */
-echo '頁碼:<input type="text" name="page" value="' . $_GET['page'] . '">
-		<input type="image" src="images/go.jpg" alt="Submit Form" />';
+function print_page_link($to, $button)
+{
+	$bookTable = new MyTable("books");
+	$last = $bookTable->get_pages();
+	echo '&nbsp;';
+	if ($to < 1 or $last < $to or $to == $_GET['page'])
+		echo $button;
+	else {
+		echo '<a href="index.php?sortOrder=' . $_GET['sortOrder'] . '&page='
+			. $to . '">' . $button . '</a>';
+	}
+	echo '&nbsp;';
+}
 
-echo '</form>';
+$page = $_GET['page'];
+if ($page == "")
+	$page = 1;
+$last = $bookTable->get_pages();
+
+if ($last > 1) {
+	print_page_link(1, "|<");
+	print_page_link($page - 1, "<<");
+	echo '第&nbsp;' . $page . '&nbsp;頁';
+	print_page_link($page + 1, ">>");
+	echo '<span title="第 ' . $last . ' 頁">';
+	print_page_link($last, ">|");
+	echo '</span>';
+	echo '頁碼:<input type="text" name="page" value="' . $page . '">
+		<input type="image" src="images/go.jpg" alt="Submit Form" />';
+	echo '</form>';
+	echo '<span id="ppp" style="display: none">some text here</span>';
+}
+?>
 

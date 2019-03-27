@@ -2,10 +2,11 @@
 
 header("Content-Type:text/html; charset=utf-8");
 include("class/MyTable.php");
+$bookTable = new MyTable("books");
 
 $select = $_GET['select'];
-$page = $_GET['page'];
 $checked = $_GET['checked'];
+$page = $_GET['page'];
 
 if ($_GET['sortOrder'] == "default") {
 	$sort = "";
@@ -18,22 +19,21 @@ if ($_GET['sortOrder'] == "default") {
 /*
  * writes all book data to $contents.
  */
-$bookTable = new MyTable();
 switch ($select) {
 	case "all":
-		$table = $bookTable->get_table($sort, $order, 0);
+		$table = $bookTable->get_table("", $sort, $order, -1);
 		break;
 
 	case "page":
 		if (empty($page))
 			$page = 1;
-		$table = $bookTable->get_table($sort, $order, $page);
+		$table = $bookTable->get_table("", $sort, $order, $page);
 		break;
 
 	case "checked":
 		if (empty($checked))
 			die("請勾選匯出資料");
-		$table = $bookTable->get_table($sort, $order, $checked);
+		$table = $bookTable->get_table($checked, $sort, $order, -1);
 		break;
 
 	default:

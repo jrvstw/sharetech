@@ -26,17 +26,18 @@ td.style1
 <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
+
 <font face="DFKai-sb">
 	<center>
 		<div style="width:800px" align="right">
-			<form id="export" action="export.php" method="get">
-				匯出方式
-				<select name="select">
+			<form id="export" action="export.php" onsubmit="return validateExport(this);" method="get">
+				<font color=#003399>匯出方式</font>
+				<select name="select" id="select">
 					<option value="">請選擇</option>
 					<option value="all">匯出全部</option>
 					<option value="page">匯出本頁</option>
 					<option value="checked">匯出選取項目</option>
-				<input type="image" src="images/export.png" alt="Submit Form" />
+				<input type="image" id="exportButton" src="images/export.png" alt="Submit Form" />
 				<input type="hidden" name="sortOrder" value="<?php echo $_GET['sortOrder']; ?>" />
 				<input type="hidden" name="page" value="<?php echo $_GET['page']; ?>" />
 			</form>
@@ -53,7 +54,7 @@ td.style1
 				<td><b>作者</b></td>
 				<td><b>定價</b></td>
 				<td><b>發行日</b></td>
-				<td><b>編輯/刪除</b></td>
+				<td><b>編輯 / 刪除</b></td>
 			</tr>
 			<?php include("printList.php"); ?>
 		</table>

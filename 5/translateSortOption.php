@@ -1,7 +1,7 @@
 <?php
 
 include("class/MyTable.php");
-$bookTable = new MyTable();
+$bookTable = new MyTable("books");
 $tableColumn = $bookTable->get_columns();
 
 $sortOption = array("isbn", "publisher", "name", "author", "price", "date");
