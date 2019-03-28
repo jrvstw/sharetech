@@ -32,18 +32,3 @@ if ($bookTable->get_pages() < $_GET['page'])
 
 include("xhtml/home.html");
 
-?>
-<script type="text/javascript">
-function validateExport()
-{
-	return false;
-	var tmp = document.getElementsById("select");
-	var e = tmp.value;
-	if (tmp.value == "") {
-		alert("select an export type");
-		return false;
-	} else
-		return true;
-}
-</script>
-

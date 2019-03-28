@@ -8,6 +8,8 @@ class MyTable
 	private $hostName;
 	private $passwd;
 
+	private $rowsPerPage = 16;
+
 	/*
 	 * Functions Overview:
 	 * -------------------------------
@@ -18,7 +20,7 @@ class MyTable
 	 * public function get_pages()
 	 * public function get_columns()
 	 * public function get_field($col, $filter, $value)
-	 * public function get_table($sort, $order, $page)
+	 * public function get_table($range, $sort, $order, $page)
 	 * public function add_entry($writeData)
 	 * public function edit_by_id($writeData, $id)
 	 * public function delete_by_id($id)
@@ -68,14 +70,13 @@ class MyTable
 
 	public function get_pages()
 	{
-		$rowsPerPage = 16;
 		$result = $this->query("select count(*) from ". $this->tbName);
 		$field = $result->fetch_row();
 		$count = $field[0];
 		if ($count == 0)
 			return 0;
 		else
-			return intdiv($count - 1, $rowsPerPage) + 1;
+			return intdiv($count - 1, $this->rowsPerPage) + 1;
 	}
 
 	public function get_columns()
@@ -104,8 +105,6 @@ class MyTable
 
 	public function get_table($range, $sort, $order, $page)
 	{
-		$rowsPerPage = 16;
-
 		$query = "select * from books";
 
 		if (empty($range))
@@ -127,7 +126,7 @@ class MyTable
 		if ($page == "")
 			$page = 1;
 		if (preg_match('/^[1-9][0-9]*$/', $page))
-			$query .= " limit " . ($page - 1) * $rowsPerPage . "," .  $rowsPerPage;
+			$query .= " limit " . ($page - 1) * $this->rowsPerPage . "," .  $this->rowsPerPage;
 		elseif ($page == -1)
 			;
 		else

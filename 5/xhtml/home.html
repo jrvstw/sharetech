@@ -1,27 +1,10 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="style/home.css" rel="stylesheet" type="text/css">
 	<title>書籍管理系統</title>
-	<script type="text/javascript">
-		function check_all(obj, cName)
-		{
-			var checkboxs = document.getElementsByName(cName);
-			for (var i = 0; i < checkboxs.length; i++) {
-				checkboxs[i].checked = obj.checked;
-			}
-		}
-	</script>
 	<style type="text/css">
-td.style1
-{
-	border-style:solid;
-	border-color:gray;
-	border-width:1px;
-		cellspacing=0;
-		cellpadding=0;
-		padding=2;
-		margin=2;
-}
 </style>
 <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
@@ -29,32 +12,35 @@ td.style1
 
 <font face="DFKai-sb">
 	<center>
-		<div style="width:800px" align="right">
-			<form id="export" action="export.php" onsubmit="return validateExport(this);" method="get">
-				<font color=#003399>匯出方式</font>
-				<select name="select" id="select">
+		<div id="showExport">
+			<form name="export" id="export" action="export.php" onsubmit="return validateExport(this);" method="get">
+				<font class="title" color=#003399>匯出方式</font>
+				<select name="select">
 					<option value="">請選擇</option>
 					<option value="all">匯出全部</option>
 					<option value="page">匯出本頁</option>
 					<option value="checked">匯出選取項目</option>
+				</select>
 				<input type="image" id="exportButton" src="images/export.png" alt="Submit Form" />
 				<input type="hidden" name="sortOrder" value="<?php echo $_GET['sortOrder']; ?>" />
 				<input type="hidden" name="page" value="<?php echo $_GET['page']; ?>" />
 			</form>
 		</div>
-		<div style="width:800px" align="right">
-			<?php include("printFilter.php"); ?>
+		<div id="showFilter">
+			<form name="filter" action="index.php" method="get">
+				<?php include("printFilter.php"); ?>
+			</form>
 		</div>
-		<table style="border:5px #BBB solid; width:800px; border-collapse:collapse" border="1">
-			<tr>
-				<td><b><input type="checkbox" name="checkall[]" onclick="check_all(this, 'checked[]')" value="congrats!"> 全選</input></b></td>
-				<td><b>ISBN</b></td>
-				<td><b>出版社</b></td>
-				<td><b>書名</b></td>
-				<td><b>作者</b></td>
-				<td><b>定價</b></td>
-				<td><b>發行日</b></td>
-				<td><b>編輯 / 刪除</b></td>
+		<table border="1">
+			<tr class="title">
+				<td style="width:  70px;"><input type="checkbox" id="checkall" name="checkall[]" onclick="check_all(this, 'checked[]')"> 全選</input></td>
+				<td style="width: 100px;">ISBN</td>
+				<td style="width:  70px;">出版社</td>
+				<td style="width: 210px;">書名</td>
+				<td style="width: 90px;">作者</td>
+				<td style="width:  50px;">定價</td>
+				<td style="width:  90px;">發行日</td>
+				<td style="width: 100px;">編輯 / 刪除</td>
 			</tr>
 			<?php include("printList.php"); ?>
 		</table>
@@ -62,8 +48,12 @@ td.style1
 			<button name="type" value="add" type="submit" style="background-color:#66FF99">新增</button>
 			<input type='hidden' name='userSubmit' value=0></input>
 		</form>
+	<div class="popup" onmouseover="myFunction()">Move here!
+		<span class="popuptext" id="myPopup">Popup text...</span>
+	</div>
 	</center>
 </font>
+<script src="js/main.js"></script>
 </body>
 </html>
 

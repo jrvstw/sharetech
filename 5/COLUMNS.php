@@ -19,7 +19,7 @@ $COLUMNS = array(
 
 	"price" => array(
 		"shown" => "定價",
-		"regex" => "/^[0-9]+$/"),
+		"regex" => "/^[1-9][0-9]*$/"),
 
 	"date" => array(
 		"shown" => "發行日",
