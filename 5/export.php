@@ -4,10 +4,12 @@ header("Content-Type:text/html; charset=utf-8");
 include("class/MyTable.php");
 $bookTable = new MyTable("books");
 
+/*
+ * retrieve parameters: select, checked, sort, order, page.
+ */
 $select = $_GET['select'];
 $checked = $_GET['checked'];
 $page = $_GET['page'];
-
 if ($_GET['sortOrder'] == "default") {
 	$sort = "";
 	$order = "";
@@ -17,7 +19,7 @@ if ($_GET['sortOrder'] == "default") {
 }
 
 /*
- * writes all book data to $contents.
+ * writes all selected data to $contents.
  */
 switch ($select) {
 	case "all":
@@ -42,7 +44,6 @@ switch ($select) {
 		die("匯出方式錯誤");
 }
 
-
 $contents = "";
 foreach ($table as $row => $line) {
 	foreach ($line as $col => $field) {
@@ -57,18 +58,15 @@ foreach ($table as $row => $line) {
 	}
 	$contents = substr($contents, 0, -1) . "\n";
 }
+
+
 /*
- * exports $contesnts to .csv file.
+ * exports $contents to .csv file.
  */
 header("Content-type: application/text");
 $string = "Content-Disposition: attachment; filename=export" .
 			date("Ymd_His") . ".csv";
 header($string);
 echo $contents;
-
-/*
-$columns = $bookTable->get_columns();
-$table = $bookTable->get_table($_GET['sort'], $_GET['order']);
- */
 
 

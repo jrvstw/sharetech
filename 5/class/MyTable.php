@@ -156,6 +156,8 @@ class MyTable
 	public function edit_by_id($writeData, $id)
 	{
 		foreach ($writeData as $col => $value) {
+			if ($col == "isbn")
+				continue;
 			$value = str_replace("\\", "\\\\", $value);
 			$value = str_replace("'", "\'", $value);
 			$query .= $col . "='" . $value . "', ";

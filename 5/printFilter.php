@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * prints sort option.
+ */
 $sortOption = array(
 	"default"		=> "請選擇",
 	"isbnasc"		=> "ISBN:ASC",
@@ -15,9 +18,6 @@ $sortOption = array(
 	"dateasc"		=> "發行日:ASC",
 	"datedsc"		=> "發行日:DSC");
 
-/*
- * prints sort option.
- */
 echo '排序方式&ensp;<select name="sortOrder" onchange="submitAndShowFirst()">';
 foreach ($sortOption as $name => $shown) {
 		if ($_GET['sortOrder'] == $name)
@@ -29,6 +29,7 @@ foreach ($sortOption as $name => $shown) {
 unset($shown);
 echo '</select>';
 
+
 /*
  * prints page option if there are more than 1 pages.
  */
@@ -39,23 +40,41 @@ $last = $bookTable->get_pages();
 
 if ($last > 1) {
 	echo '&emsp;';
+
+	/*
+	 * prints buttons.
+	 */
 	print_page_link($page, "|<", 1);
 	print_page_link($page, "<<", $page - 1);
 	echo '第&nbsp;' . $page . '&nbsp;頁';
 	print_page_link($page, ">>", $page + 1);
-	echo '<span title="第 ' . $last . ' 頁">';
-	print_page_link($page, ">|", $last);
-	echo '</span>';
+
+	if ($page == $last)
+		print_page_link($page, ">|", $last);
+	else {
+		echo '<span class="popup"
+					onmouseover="togglePopup(\'lastPageButton\')">';
+		print_page_link($page, ">|", $last);
+		echo '<span class="popupPage" id="lastPageButton">第 ' . $last .
+				' 頁</span></span>';
+	}
+	/*
+	 * prints text input.
+	 */
 	echo '&emsp;頁碼:<input type="text"
 							name="page"
 							style="width: 40px;"
 							value="' .  $page . '">
-		  &emsp;<input type="image"
-						src="images/go.jpg"
-						style="vertical-align: middle;"
-						onclick="return submitPage(\'' .  $last . '\');"/>';
+		  <input type="image"
+				src="images/go.jpg"
+				style="vertical-align: middle;"
+				onclick="return submitPage(\'' .  $last . '\');"/>';
 }
 
+
+/*
+ * This is used to print page buttons.
+ */
 function print_page_link($from, $button, $to)
 {
 	$bookTable = new MyTable("books");
@@ -68,5 +87,4 @@ function print_page_link($from, $button, $to)
 			. $to . '">' . $button . '</a>';
 	echo '&nbsp;';
 }
-?>
 

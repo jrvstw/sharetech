@@ -1,6 +1,15 @@
 <?php
 
-foreach ($writeData as $col => $value) {
+/*
+ * prints $DataToWrite (from update.php) to screen.
+ */
+if ($_GET['type'] == "edit")
+	echo '<tr> <td>' . $COLUMNS["isbn"]["shown"] . '</td> <td>' .
+			$bookTable->get_field("isbn", "id", $_GET['id']) . '</td> </tr>';
+
+foreach ($DataToWrite as $col => $value) {
+	if ($col == "isbn" and $_GET['type'] == "edit")
+		continue;
 	$value = str_replace('"', '&quot;', $value);
 	echo '<tr> <td>' . $COLUMNS[$col]["shown"] . '</td> <td> <input type="';
 
@@ -9,12 +18,7 @@ foreach ($writeData as $col => $value) {
 	else
 		echo 'text';
 
-	echo '" name="' . $col . '" value="' . $value . '"';
-
-	if ($_GET['type'] == 'edit' and $col == 'isbn')
-		echo ' readonly';
-
-	echo">";
+	echo '" name="' . $col . '" value="' . $value . '">';
 
 	if ($_POST['userSubmit'] == 1 and $dataValid[$col] == false)
 		echo '<br><font color="red">invalid format.</font>';

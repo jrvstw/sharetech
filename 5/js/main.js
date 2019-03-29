@@ -1,5 +1,5 @@
 
-function check_all(obj, cName)
+function checkAll(obj, cName)
 {
 	var checkboxes = document.getElementsByName(cName);
 	for (var i = 0; i < checkboxes.length; i++) {
@@ -7,7 +7,7 @@ function check_all(obj, cName)
 	}
 }
 
-function change_checkall()
+function changeCheckall()
 {
 	var checkboxes = document.getElementsByName("checked[]");
 	var write = true;
@@ -57,16 +57,27 @@ function submitPage(last)
 	} else if (reg.test(page) == false || page < 1) {
 		alert("無效的頁碼格式");
 		return false;
-	} else if (last < page) {
+	} else if (parseInt(last) < page) {
 		alert("資料表不超過" + last + "頁");
 		return false;
 	}
 }
 
 // When the user clicks on <div>, open the popup
-function myFunction() {
-  var popup = document.getElementById("myPopup");
-  popup.classList.toggle("show");
+function togglePopup(id)
+{
+  document.getElementById(id).classList.toggle("show");
 }
 
+var row = document.getElementsByTagName('tr');
+for (var i = 1; i < row.length; i++) {
+	row[i].onmouseover = function()
+	{
+		this.style.background = "#EEEEEE";
+	}
+	row[i].onmouseout = function()
+	{
+		this.style.background = "#FFFFFF";
+	}
+}
 

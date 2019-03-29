@@ -1,6 +1,10 @@
 <?php
 
 header("Content-Type:text/html; charset=utf-8");
+
+/*
+ * retrieve parameters: sort, order, page.
+ */
 if ($_GET['sortOrder'] == "default") {
 	$sort = "";
 	$order = "";
@@ -11,31 +15,58 @@ if ($_GET['sortOrder'] == "default") {
 
 $page = $_GET['page'];
 
+
 /*
  * prints books list. If sort option is set, prints in order.
  */
 $table = $bookTable->get_table("", $sort, $order, $page);
 $publishers = new MyTable("publishers");
-foreach ($table as $line) {
+
+foreach ($table as $row => $line) {
 	echo "<tr>";
-	echo '<td><input type="checkbox" form="export" name="checked[]" value="' .
-	$line["id"] . '" onclick="change_checkall()"/></td>';
-	foreach ($COLUMNS as $key => $col) {
-		if ($key == "id")
+	/*
+	 * prints checkbox
+	 */
+	echo '<td><input type="checkbox"
+					 form="export"
+					 name="checked[]"
+					 value="' .  $line["id"] . '"
+					 onclick="changeCheckall()"/>
+		  </td>';
+	/*
+	 * prints every column
+	 */
+	foreach ($COLUMNS as $col => $noNeed) {
+		if ($col == "id")
 			continue;
-		$content = "<td>" . $line[$key] . "</td>";
-		if ($key == "publisher") {
-			$phone = $publishers->get_field("phone", $key, $line[$key]);
-			$address = $publishers->get_field("address", $key, $line[$key]);
-			$popup = ' title="' . $phone . '&#010;' . $address . '"';
-			$content = substr_replace($content, $popup, 3, 0);
+		$content = "<td>" . $line[$col] . "</td>";
+		/*
+		 * in column "publisher", makes popup box if there's info about it.
+		 */
+		if ($col == "publisher") {
+			$phone = $publishers->get_field("phone", $col, $line[$col]);
+			$address = $publishers->get_field("address", $col, $line[$col]);
+			if ($phone != null or $address != null) {
+				$popId = 'row' . $row . 'pub';
+				$insert = ' class="popup"
+							onmouseover="togglePopup(\'' . $popId . '\')"
+							onmouseout="togglePopup(\'' . $popId . '\')"';
+				$content = substr_replace($content, $insert, 3, 0);
+
+				$insert = '<span class="popupPublisher" id="' . $popId . '">' .
+							$phone . '<br>' . $address .  '</span>';
+				$content = substr_replace($content, $insert, -5, 0);
+			}
 		}
 		echo $content;
 	}
+	/*
+	 * prints buttons: edit, delete.
+	 */
 	echo "<td>
 			  <form action='update.php' style='display:inline' method='get'>
-				  <button name='type' value='edit' type='submit'
-					  class='edit'>編輯</button>
+				  <button name='type' value='edit' type='submit' class='edit'>
+					編輯</button>
 				  <input type='hidden' name='id' value='" . $line["id"] . "'></input>
 				  <input type='hidden' name='userSubmit' value=0></input>
 			  </form>
@@ -48,22 +79,6 @@ foreach ($table as $line) {
 			  </form>
 		  </td>";
 	echo "</tr>";
-	unset($col);
 }
 unset($line);
-?>
-
-<script type="text/javascript">
-var row = document.getElementsByTagName('tr');
-for (var i = 1; i < row.length; i++) {
-	row[i].onmouseover = function()
-	{
-		this.style.background = "#EEEEEE";
-	}
-	row[i].onmouseout = function()
-	{
-		this.style.background = "#FFFFFF";
-	}
-}
-</script>
 

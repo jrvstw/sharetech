@@ -1,19 +1,19 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="style/update.css" rel="stylesheet" type="text/css">
 		<title><?php echo strtoupper($_GET['type']); ?></title>
 	</head>
 	<body>
-		<center>
-			<form method="post">
-				<table border=1>
-					<?php include("printForm.php"); ?>
-				</table>
-				<button type="submit" name="type" value="update">
-					<?php echo strtoupper($_GET['type']); ?>
-				</button>
-			</form>
-		</center>
+		<form method="post">
+			<table>
+				<?php include("printForm.php"); ?>
+			</table>
+			<button type="submit" name="type" value="update">
+				<?php echo strtoupper($_GET['type']); ?>
+			</button>
+		</form>
 	</body>
 </html>
 

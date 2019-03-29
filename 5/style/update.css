@@ -1,0 +1,28 @@
+body {
+    font-family: "DFKai-SB";
+	text-align: center;
+}
+
+table {
+	border: 5px solid #BBB;
+	border-collapse: collapse;
+	text-align: center;
+	margin: auto;
+}
+
+tr {
+    line-height: 30px;
+	font-size: 14px;
+	vertical-align: top;
+	background-color: #FFFFFF;
+}
+
+td {
+    border: 1px solid #BBB;
+}
+
+input {
+    width: 95%;
+    box-sizing: border-box;
+}
+

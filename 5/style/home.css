@@ -1,6 +1,15 @@
+body {
+    font-family: "DFKai-SB";
+    width: 900px;
+    text-align: center;
+    margin: auto;
+}
 table {
 	border: 5px solid #BBB;
 	border-collapse: collapse;
+	text-align: center;
+    width: 900px;
+	margin: auto;
 }
 
 tr {
@@ -20,56 +29,36 @@ select {
 
 .popup {
 	position: relative;
-	display: inline-block;
-	cursor: pointer;
 }
 
 /* The actual popup (appears on top) */
-.popup .popuptext {
-  visibility: hidden;
-  width: 160px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 8px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -80px;
+.popupPage {
+    width: 70px;
+    margin-left: -40px;
+    text-align: center;
 }
 
-/* Toggle this class when clicking on the popup container (hide and show the popup) */
-.popup .show {
-  visibility: visible;
+.popupPublisher {
+    width: 300px;
+    margin-left: -65px;
+    text-align: left;
 }
 
-/* Popup arrow */
-/*
-.popup .popuptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-*/
-
-/* Add animation (fade in the popup) */
-/*
-@-webkit-keyframes fadeIn {
-  from {opacity: 0;} 
-  to {opacity: 1;}
+.popupPublisher, .popupPage {
+    display: none;
+    position: absolute;
+    border: 2px solid #000;
+    top: 100%;
+    padding: 8px;
+    background-color: #F1F1F1;
+    font-weight: normal;
+    color: black;
+    z-index: 1;
 }
 
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity:1 ;}
+.show {
+    display: inline;
 }
-*/
 
 .title {
 	font-size: 16px;
@@ -83,23 +72,12 @@ select {
 	background-color: #FF0000;
 }
 
-#showExport, #showFilter {
-	height: 28px;
-	width: 800px;
+#export, #filter {
+    width: 900px;
+	height: 32px;
 	text-align: right;
 	font-size: 13px;
 	font-weight: bold;
 	color: #003399;
-}
-
-td.style1
-{
-	border-style:solid;
-	border-color:gray;
-	border-width:1px;
-		cellspacing=0;
-		cellpadding=0;
-		padding=2;
-		margin=2;
 }
 
