@@ -1,0 +1,2 @@
+SUBSYSTEM=="net", DRIVERS=="e1000e", KERNELS=="0000:03:00.0", ATTRS{local_cpus}=="1", ATTRS{local_cpulist}=="0", NAME="eth01"
+SUBSYSTEM=="net", DRIVERS=="e1000e", KERNELS=="0000:02:00.0", ATTRS{local_cpus}=="1", ATTRS{local_cpulist}=="0", NAME="eth3"
