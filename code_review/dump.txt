@@ -1,0 +1,64 @@
+58052152,3824,80491,5,7256519,478,80491,5
+1766871624,33557872,223378,75368,220858953,4194734,223378,75368
+0,0,,,,,,
+58045848,3824,80480,5,7255731,478,80480,5
+--------get_ethinfo--------
+Array
+(
+    [0] => Array
+        (
+            [dev] => eth0
+            [name] => LAN
+            [ip] => 192.168.33.141
+            [connect] => up
+            [link] => yes
+            [rx_error] => 0
+            [tx_error] => 0
+            [collisions] => 
+        )
+
+    [1] => Array
+        (
+            [dev] => eth1
+            [ip] => 192.168.189.141
+            [name] => WAN1
+            [connect] => up
+            [link] => yes
+            [rx_error] => 0
+            [tx_error] => 0
+            [collisions] => 
+        )
+
+    [2] => Array
+        (
+            [dev] => eth2
+            [ip] => OFF
+            [name] => WAN2
+            [connect] => down
+            [link] => no
+            [rx_error] => 0
+            [tx_error] => 0
+            [collisions] => 
+        )
+
+    [3] => Array
+        (
+            [dev] => eth3
+            [name] => DMZ
+            [ip] => 172.16.33.141
+            [connect] => up
+            [link] => yes
+            [rx_error] => 0
+            [tx_error] => 0
+            [collisions] => 
+        )
+
+)
+--------get_dns--------
+running
+--------cpuloading--------
+1615940, 19439, 0.00, 0.00, 0.00
+--------hddinfo--------
+6047,5203,10%
+--------meminfo--------
+513.17,266.99
