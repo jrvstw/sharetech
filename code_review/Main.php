@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/PGRAM/php/bin/php -q
 <?php
 	// Main.php is executed by cron once a minute, eg: 09:00:00, 09:01:00, 09:02:00 
@@ -17,11 +18,19 @@
 	$port_dev_info_file = "60-myorder.rules";
 	$aPortDev = get_port_dev($port_conf, $port_dev_info_file, $map);
 
+=======
+<?php
+	// Main.php is executed by cron once a minute, eg: 09:00:00, 09:01:00, 09:02:00 
+	include("PortDev.php");
+	$port = new Port();
+	$aPortDev = $port->get_port_dev();
+	ksort($aPortDev);
+>>>>>>> addb2ebba149e8d83062067bc622aa89b1e87dea
 	$filename = "/PCONF/IFdata";
 
 	$refresh = 2;
 	$aIFTxRx = array();
-	read_ifdata(&$refresh, &$aIFTxRx);
+	read_ifdata($refresh, $aIFTxRx);
 
 	if(is_file("/ram/tmp/wanstatus")) {
 		$wanstatus = file("/ram/tmp/wanstatus");

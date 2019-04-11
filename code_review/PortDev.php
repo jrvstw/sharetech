@@ -1,6 +1,10 @@
 <?php
+<<<<<<< HEAD
 
 function get_port_dev($port_conf, $port_dev_info_file, $map)
+=======
+class Port
+>>>>>>> addb2ebba149e8d83062067bc622aa89b1e87dea
 {
 	$tmp = parse_ini_file($port_conf);
 	$WAN = $tmp["WAN"];
