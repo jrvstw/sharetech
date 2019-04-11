@@ -1,22 +1,10 @@
 #!/PGRAM/php/bin/php -q
 <?php
 	// Main.php is executed by cron once a minute, eg: 09:00:00, 09:01:00, 09:02:00 
-
-	$map = array(
-		"eth2" => "W2",
-		"eth3" => "L2",
-		"eth4" => "W3",
-		"eth5" => "W4",
-		"eth6" => "W5",
-		"eth01" => "L1A",
-		"eth02" => "L1B",
-		"eth03" => "L1C");
-
 	include_once("PortDev.php");
-	$port_conf = "port.conf";
-	$port_dev_info_file = "60-myorder.rules";
-	$aPortDev = get_port_dev($port_conf, $port_dev_info_file, $map);
-
+	$port = new Port();
+	$aPortDev = $port->get_port_dev();
+	ksort($aPortDev);
 	$filename = "/PCONF/IFdata";
 
 	$refresh = 2;
