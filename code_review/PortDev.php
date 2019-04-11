@@ -1,4 +1,4 @@
-<?
+<?php
 class Port
 {
 	function getv($key) {

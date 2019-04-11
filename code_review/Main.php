@@ -1,7 +1,6 @@
-#!/PGRAM/php/bin/php -q
-<?
+<?php
 	// Main.php is executed by cron once a minute, eg: 09:00:00, 09:01:00, 09:02:00 
-	include_once("PortDev.php");
+	include("PortDev.php");
 	$port = new Port();
 	$aPortDev = $port->get_port_dev();
 	ksort($aPortDev);
@@ -9,7 +8,7 @@
 
 	$refresh = 2;
 	$aIFTxRx = array();
-	read_ifdata(&$refresh, &$aIFTxRx);
+	read_ifdata($refresh, $aIFTxRx);
 
 	if(is_file("/ram/tmp/wanstatus")) {
 		$wanstatus = file("/ram/tmp/wanstatus");
