@@ -1,18 +1,14 @@
 <?php
+header("Content-Type:text/html; charset=utf-8");
+include_once("fetch_table.php");
 
 $command = "/usr/sbin/arp -n";
-exec($command, $output, $retVal);
-if ($retVal != 0)
-	die("Error executing command: $command");
+$offset = 0;
+$length = null;
+$table = get_table($command, $offset, $length);
 
-array_shift($output);
+$show_column = array(0, 2, 5);
+$table = table_column_filter($table, $show_column);
 
-$arp_table = array();
-foreach ($output as $key => $line) {
-	$tmp = preg_split('/[\s]+/', $line);
-	$arp_table[$key]["ip"] = $tmp[0];
-	$arp_table[$key]["mac"] = $tmp[2];
-	$arp_table[$key]["iface"] = $tmp[4];
-}
-print_r($arp_table);
+include("xhtml/showarp.html");
 
