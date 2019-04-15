@@ -1,0 +1,28 @@
+<?php
+header("Content-Type:text/html; charset=utf-8");
+
+function get_table($command, $offset, $length, $columns)
+{
+	exec($command, $output, $ret);
+	if ($ret != 0)
+		die("Error $ret executing \"$command\"");
+
+	$output = array_slice($output, $offset, $length);
+	$title = array_shift($output);
+	foreach ($columns as $name)
+		$column_pos[$name] = strpos($title, $name);
+	foreach ($output as $key => $line)
+		$arp_table[$key] = get_value_by_column($line, $column_pos);
+
+	return $arp_table;
+}
+
+function get_value_by_column($string, $column_pos)
+{
+	foreach ($column_pos as $name => $pos) {
+		$tmp = explode(" ", substr($string, $pos), 2);
+		$retArr[$name] = $tmp[0];
+	}
+	return $retArr;
+}
+

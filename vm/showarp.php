@@ -2,21 +2,21 @@
 header("Content-Type:text/html; charset=utf-8");
 include_once("fetch_table.php");
 
-$title = "Kernel IP routing table";
-$user_option = array();
-$mode = "show";
-
 /*
  * This fetches table from $command to $table
  */
-$command = "/sbin/route -n";
-$offset = 1;
+$command = "/sbin/arp -n";
+$offset = 0;
 $length = null;
-$table = fetch_table($command, $offset, $length);
-
+$column = array(
+	array("start" =>  0, "length" => 15),
+	array("start" => 33, "length" => 17),
+	array("start" => 75, "length" => 10)
+);
+$table = fetch_table($command, $offset, $length, $column);
+$title = "ARP Table";
 
 include("xhtml/showtable.html");
-
 
 /*
  * Functions overview:
@@ -32,7 +32,7 @@ function print_title($title)
 	return;
 }
 
-function print_table($table, $mode)
+function print_table($table)
 {
 	echo "<table border=1>";
 	foreach ($table as $row => $line) {
@@ -45,11 +45,6 @@ function print_table($table, $mode)
 		echo "</tr>\n";
 	}
 	echo "</table>";
-	return;
-}
-
-function print_option($user_option, $mode)
-{
 	return;
 }
 

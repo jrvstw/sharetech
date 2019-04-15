@@ -2,10 +2,6 @@
 header("Content-Type:text/html; charset=utf-8");
 include_once("fetch_table.php");
 
-$title = "Kernel IP routing table";
-$user_option = array();
-$mode = "show";
-
 /*
  * This fetches table from $command to $table
  */
@@ -14,6 +10,7 @@ $offset = 1;
 $length = null;
 $table = fetch_table($command, $offset, $length);
 
+$title = "Kernel IP routing table";
 
 include("xhtml/showtable.html");
 
@@ -32,7 +29,7 @@ function print_title($title)
 	return;
 }
 
-function print_table($table, $mode)
+function print_table($table)
 {
 	echo "<table border=1>";
 	foreach ($table as $row => $line) {
@@ -45,11 +42,6 @@ function print_table($table, $mode)
 		echo "</tr>\n";
 	}
 	echo "</table>";
-	return;
-}
-
-function print_option($user_option, $mode)
-{
 	return;
 }
 

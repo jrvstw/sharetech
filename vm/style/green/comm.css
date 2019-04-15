@@ -1,0 +1,195 @@
+html,body {
+	margin: 0px;
+	padding: 0px;
+}
+body {
+	FONT-SIZE: 13px; 
+	COLOR: #3E3E3E; 
+	LINE-HEIGHT: 1.6; 
+	FONT-FAMILY: "Arial";
+}
+a { outline:none; }
+
+/*********************/
+.tableStyle01 {
+	width: 100%;
+	border-collapse: collapse;
+}
+.tableStyle02 {
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid #BBB;
+}
+.tableStyle02 td {
+	padding-left: 4px;
+	border: 1px solid #BBB;
+	FONT-SIZE: 13px; 
+	LINE-HEIGHT: 1.6; 
+	FONT-FAMILY: "Arial", "Helvetica", "sans-serif";
+	text-align: center;
+}
+.tableStyle03 {
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid #BBB;
+	/*background-color: #f0f0f0;*/
+	background-color: #FFF;
+}
+.tableStyle03 td {
+	padding: 4px;
+	FONT-SIZE: 13px; 
+	LINE-HEIGHT: 1.6;
+	FONT-FAMILY: "Arial", "Helvetica", "sans-serif";
+}
+.tbHead,.tbHead2 {
+	font-weight:bold; 
+	COLOR: #1b5f0c; 
+}
+.tbHead td {
+	background: url(/images/green/tab_bg.jpg) repeat-x;
+	white-space: nowrap;
+}
+.tbHead2 td {
+	background-color: #f2f8fb;
+}
+.tbMark01 {	background-color: #FFFFFF; }
+.tbMark02 {	background-color: #F0F0F0; }
+.tbMark03 {	background-color: #E1E1E1; }
+
+.tbSortNone {
+	font-weight:bold; 
+	COLOR: #1b5f0c; 
+	background: url(/images/green/tab_bg.jpg) repeat-x;
+}
+.tbSortMarkColor {
+	font-weight:bold; 
+	COLOR: #1b5f0c; 
+	background-color: #BFBFBF;
+	cursor: pointer;
+}
+.tbSortMarkNone {
+	font-weight:bold; 
+	COLOR: #1b5f0c; 
+	background: url(/images/green/tab_bg.jpg) repeat-x;
+	cursor: pointer;
+}
+
+.border4px {
+	border: 4px solid #FFF;
+}
+
+/*********************/
+#tabs10 {
+	float: left;
+	font-size: 12px;
+	font-weight:bold; 
+	line-height:2.0;
+}
+#tabs10 ul {
+	margin: 0px;
+	padding: 10px 10px 0 45px;
+	list-style: none;
+}
+#tabs10 li {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+}
+#tabs10 a {
+  float: left;
+  background: url(/images/green/tableft9.gif) no-repeat left top;
+  margin: 0px;
+  padding: 0px 1px 0px 4px;
+  text-decoration: none;
+}
+#tabs10 a span {
+  float: left;
+  display: block;
+  background: url(/images/green/tabright9_01.gif) repeat-x right top;
+  padding: 4px 13px 3px 9px;
+  color: #FFF;
+}
+#tabs10 a span {float:none;}
+#tabs10 a:hover {  background-position:0% -42px;  }
+#tabs10 a:hover span {  background-position:100% -42px;  }
+#tabs10 #current a {  background-position:0% -42px;  }
+#tabs10 #current a span {  background-position:100% -42px;  }
+
+.tabberBoder {
+	border: 1px solid #317624;
+}
+
+/*********************/
+.block_title {
+	font-weight: bold; 
+	FONT-SIZE: 13px; 
+	COLOR: #176805;
+	text-align: left;
+	padding-left: 24px;
+	background: url(/images/green/template_31.jpg) no-repeat left bottom;
+}
+/*********************/
+.font01 {
+	font-weight: bold; 
+	FONT-SIZE: 13px; 
+	COLOR: #235397;
+}
+.font02 {
+	FONT-SIZE: 12px; 
+	COLOR: #235397; 
+}
+
+.input01 {
+	border: #cccccc 1px solid; 
+	WIDTH: 45px; 
+	HEIGHT: 19px; 
+	BACKGROUND-COLOR: #ffffff
+}
+/*********************/
+.button {
+	border: none;
+	padding: 0px;
+	background-color:  transparent;
+	cursor: pointer;
+}
+.txtButton {
+	font-size: 12px;
+	padding: 0px;
+}
+.verifyTip {	
+	margin-left: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	/*
+	color: #000;
+	border: 1px solid #BBBBBB;
+	background-color: #FFD9D9;
+	*/
+}
+
+/*********************/
+.lockWidth {
+	width: 800px;
+}
+form {
+	margin: 0px;
+	padding: 0px;
+}
+img {
+	vertical-align:middle;
+}
+/*********************/
+.toggleBlock {
+	position: absolute;
+	border-right: 2px solid #C0C0C0;
+	border-bottom: 2px solid #C0C0C0;
+	background-color: #dae6da;
+}
+.toggleBlockShadow {
+	border: 1px solid #8f8f8f;
+	background-color: #dae6da;
+	padding: 4px;
+}
+.toggleBlock * {
+	font-size: 12px;
+}
