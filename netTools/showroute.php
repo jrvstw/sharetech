@@ -1,9 +1,9 @@
 <?php
 header("Content-Type:text/html; charset=utf-8");
-include_once("fetch_table.php");
+include_once("class/Table.php");
 
 $title = "Kernel IP routing table";
-$user_option = array();
+$permission = array();
 $mode = "show";
 
 /*
@@ -12,7 +12,8 @@ $mode = "show";
 $command = "/sbin/route -n";
 $offset = 1;
 $length = null;
-$table = fetch_table($command, $offset, $length);
+$route_table = new Table();
+$table = $route_table->get_table($command, $offset, $length);
 
 
 include("xhtml/showtable.html");
@@ -21,14 +22,20 @@ include("xhtml/showtable.html");
 /*
  * Functions overview:
  * --------------------------------
- * function print_title($title)
- * function print_table($table)
+ *  print_title($title)
+ *  print_option($permission, $mode)
+ *  print_table($table)
  */
 
 function print_title($title)
 {
 	if ($title)
 		echo "<div class=\"title\">$title</div>";
+	return;
+}
+
+function print_option($permission, $mode)
+{
 	return;
 }
 
@@ -45,11 +52,6 @@ function print_table($table, $mode)
 		echo "</tr>\n";
 	}
 	echo "</table>";
-	return;
-}
-
-function print_option($user_option, $mode)
-{
 	return;
 }
 

@@ -1,75 +1,101 @@
 <?php
 header("Content-Type:text/html; charset=utf-8");
 
+$title = "Interfaces";
+$permission = null;
+$mode = null;
 $devs = array("eth0", "eth1", "eth2", "eth3");
 //$devs = array("lo", "eno1");
-$table = fetch_ifconfig($devs);
-$title = "Interfaces";
+$table = fetch_IF($devs);
 
 include("xhtml/showtable.html");
 
 /*
  * Functions overview:
  * --------------------------------
- * function fetch_ifconfig($devs)
- * function print_title($title)
- * function print_table($table)
+ *  fetch_IF($devs)
+ *  to_ip($mask)
+ *  print_title($title)
+ *  print_option($permission, $mode)
+ *  print_table($table, $mode)
  */
 
-/*
-root:/PDATA/apache# ifconfig eth0
-eth0      Link encap:Ethernet  HWaddr 00:50:56:35:F3:CB  
-          inet addr:192.168.33.141  Bcast:192.168.33.255  Mask:255.255.255.0
-          inet6 addr: fe80::250:56ff:fe35:f3cb/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:123135 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:6 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:10988666 (10.4 Mb)  TX bytes:548 (548.0 b)
-          Interrupt:18 Base address:0x1400 
- */
-
-function fetch_ifconfig($devs)
+function fetch_IF($devs)
 {
-	$command = "/sbin/ifconfig";
-	$table[] = array("ip", "mask", "rx_pack", "rx_erro", "tx_pack", "tx_error", "rx_flow", "tx_flow");
-	//$table[] = array("ip", "mask", "rx_pack", "rx_flow", "rx_error", "tx_pack", "tx_flow", "tx_error");
+	$table[] = array(
+		"dev" => "dev",
+		"ip" => "ip",
+		"mask" => "mask",
+		"connect" => "connect",
+		"link" => "link",
+		"tx_pack" => "tx_pack",
+		"rx_pack" => "rx_pack",
+		"tx_flow" => "tx_flow",
+		"rx_flow" => "rx_flow",
+		"tx_error" => "tx_error",
+		"rx_error" => "rx_error");
+
 	foreach ($devs as $dev) {
-		exec("$command $dev", $output, $ret);
+		$attr["dev"] = $dev;
+		$command = "/sbin/ip address show $dev";
+		exec("$command", $output, $ret);
 		if ($ret != 0)
-			die("Error $ret executing \"$command $dev\"");
+			die("Error $ret executing \"$command\"");
 		$output = implode($output, " ");
 
-		$pattern =
-			"/inet addr:([0-9\.]+) .*" .
-			"Mask:([0-9\.]+) .*" .
-			"RX packets:([0-9]+) errors:([0-9]+) .*" .
-			"TX packets:([0-9]+) errors:([0-9]+) .*" .
-			"RX bytes:([0-9]+) .*" .
-			"TX bytes:([0-9]+) .*" .
-			"/";/*
-			 */
-		$patternNew =
-			"/inet ([0-9\.]+)  netmask ([0-9\.]+) .*" .
-			"RX packets ([0-9]+)  bytes ([0-9]+) .*" .
-			"RX errors ([0-9]+) .*" .
-			"TX packets ([0-9]+)  bytes ([0-9]+) .*" .
-			"TX errors ([0-9]+) /";
+		$pattern = "/ inet ([0-9\.]+)\/([0-9]+) /";
 		if (preg_match($pattern, $output, $match)) {
-			$attr[0] = $match[1];
-			$attr[1] = $match[2];
-			$attr[2] = $match[3];
-			$attr[3] = $match[4];
-			$attr[4] = $match[5];
-			$attr[5] = $match[6];
-			$attr[6] = $match[7];
-			$attr[7] = $match[8];
-			$table[] = $attr;
+			$attr["ip"] = $match[1];
+			$attr["mask"] = to_ip($match[2]);
 		}
+
+		$pattern = "/[<,]UP[,>]/";
+		if (preg_match($pattern, $output, $match))
+			$attr["connect"] = "UP";
 		else
-			$table[] = array();
+			$attr["connect"] = "DOWN";
+		$command = "/bin/cat /sys/class/net/$dev/carrier 2> /dev/null";
+		exec($command, $output, $retVal);
+		if ($retVal == 0 and $output[0] == "1")
+			$attr["link"] = "YES";
+		else
+			$attr["link"] = "NO";
+
+		$command = "/sbin/ip -s link show $dev";
+		exec("$command", $output, $ret);
+		if ($ret != 0)
+			die("Error $ret executing \"$command\"");
+		$output = implode($output, "\n");
+
+		$pattern = "/ RX: bytes .*\n +([0-9]+) +([0-9]+) +([0-9]+) /";
+		if (preg_match($pattern, $output, $match)) {
+			$attr["rx_flow"] = $match[1];
+			$attr["rx_pack"] = $match[2];
+			$attr["rx_error"] = $match[3];
+		} else
+			die("Error matching string with command $command");
+
+		$pattern = "/TX: bytes .*\n +([0-9]+) +([0-9]+) +([0-9]+) /";
+		if (preg_match($pattern, $output, $match)) {
+			$attr["tx_flow"] = $match[1];
+			$attr["tx_pack"] = $match[2];
+			$attr["tx_error"] = $match[3];
+		} else
+			die("Error matching string with command $command");
+
+		$table[] = $attr;
 	}
 	return $table;
+}
+
+function to_ip($mask)
+{
+	if (empty($mask))
+		return "";
+	$rem = 32 - (int)$mask;
+	$long = ip2long("255.255.255.255");
+	$long = $long >> $rem << $rem;
+	return long2ip($long);
 }
 
 function print_title($title)
@@ -79,7 +105,12 @@ function print_title($title)
 	return;
 }
 
-function print_table($table)
+function print_option($permission, $mode)
+{
+	return;
+}
+
+function print_table($table, $mode)
 {
 	echo "<table border=1>";
 	foreach ($table as $row => $line) {
@@ -87,8 +118,8 @@ function print_table($table)
 			echo "<tr class=\"header\">\n";
 		else
 			echo "<tr>\n";
-		foreach ($line as $field)
-			echo "<td>" . $field . "</td>\n";
+		foreach ($table[0] as $key => $field)
+			echo "<td>" . $line[$key] . "</td>\n";
 		echo "</tr>\n";
 	}
 	echo "</table>";
