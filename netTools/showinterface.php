@@ -18,8 +18,8 @@ header("Content-Type:text/html; charset=utf-8");
  */
 $title = "Interfaces";
 $ip = "/sbin/ip";
-//$devs = array("eth0", "eth1", "eth2", "eth3");
-$devs = array("lo", "wlp3s0");
+$devs = array("eth0", "eth1", "eth2", "eth3");
+//$devs = array("lo", "wlp3s0");
 $table = fetch_IF($devs, $ip);
 
 /*
@@ -36,9 +36,11 @@ include("xhtml/showtable.html");
  * --------------------------------
  *  fetch_IF($devs, $ip)
  *  	to_ip($mask)
+ *  function alert($string)
  *  print_title($title)
  *  print_menu($permission, $mode)
  *  print_table($table)
+ *  include_js()
  */
 
 function fetch_IF($devs, $ip)
@@ -59,10 +61,13 @@ function fetch_IF($devs, $ip)
 	foreach ($devs as $dev) {
 		$attr["dev"] = $dev;
 
+		/*
+		 * execute "ip address show $dev" to fetch ip, mask and connect status.
+		 */
 		$command = "$ip address show $dev";
-		exec("$command", $output, $ret);
+		exec($command, $output, $ret);
 		if ($ret != 0)
-			die("Error $ret executing \"$command\"");
+			alert("Error $ret executing $command");
 		$output = implode($output, " ");
 		$pattern = "/ inet ([0-9\.]+)\/([0-9]+) /";
 		if (preg_match($pattern, $output, $match)) {
@@ -75,6 +80,9 @@ function fetch_IF($devs, $ip)
 		else
 			$attr["connect"] = "DOWN";
 
+		/*
+		 * cat carrier files to fetch link status.
+		 */
 		$command = "/bin/cat /sys/class/net/$dev/carrier 2> /dev/null";
 		exec($command, $output, $retVal);
 		if ($retVal == 0 and $output[0] == "1")
@@ -82,10 +90,13 @@ function fetch_IF($devs, $ip)
 		else
 			$attr["link"] = "NO";
 
-		$command = "$ip -s link";// show $dev";
+		/*
+		 * execute "ip -s link show $dev" to fetch flow information.
+		 */
+		$command = "$ip -s link show $dev";
 		exec($command, $output, $retVal);
 		if ($retVal != 0)
-			die("Error $retVal executing \"$command\"");
+			alert("Error $retVal executing $command");
 		$output = implode($output, "\n");
 
 		$pattern = "/ RX: bytes [^\n]*\n +([0-9]+) +([0-9]+) +([0-9]+) /";
@@ -94,7 +105,7 @@ function fetch_IF($devs, $ip)
 			$attr["rx_pack"] = $match[2];
 			$attr["rx_error"] = $match[3];
 		} else
-			die("Error matching string with command $command");
+			alert("Error matching string with command $command");
 
 		$pattern = "/TX: bytes [^\n]*\n +([0-9]+) +([0-9]+) +([0-9]+) /";
 		if (preg_match($pattern, $output, $match)) {
@@ -102,9 +113,7 @@ function fetch_IF($devs, $ip)
 			$attr["tx_pack"] = $match[2];
 			$attr["tx_error"] = $match[3];
 		} else
-			die("Error matching string with command $command");
-		/*
-		 */
+			alert("Error matching string with command $command");
 
 		$table[] = $attr;
 	}
@@ -119,6 +128,11 @@ function to_ip($mask)
 	$long = ip2long("255.255.255.255");
 	$long = $long >> $rem << $rem;
 	return long2ip($long);
+}
+
+function alert($string)
+{
+	echo "<script type='text/javascript'>alert(\"$string\");</script>";
 }
 
 function print_title($title)
@@ -146,6 +160,11 @@ function print_table($table)
 		echo "</tr>\n";
 	}
 	echo "</table>";
+	return;
+}
+
+function include_js()
+{
 	return;
 }
 

@@ -1,11 +1,17 @@
-form {
-	display: inline;
-}
 table {
 	margin: auto;
 }
 
+form {
+	display: inline;
+}
+
 .title {
+	font-size: 20px;
+	text-align: center;
+}
+
+.menu {
 	text-align: center;
 }
 
@@ -14,7 +20,7 @@ table {
 	font-weight: bold;
 }
 
-.menu {
-	text-align: center;
+#content {
+
 }
 

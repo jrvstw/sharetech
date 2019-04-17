@@ -46,6 +46,7 @@ include("xhtml/showtable.html");
  *  print_title($title)
  *  print_menu($permission, $mode)
  *  print_table($table)
+ *  include_js()
  */
 
 function print_title($title)
@@ -73,6 +74,11 @@ function print_table($table)
 		echo "</tr>\n";
 	}
 	echo "</table>";
+	return;
+}
+
+function include_js()
+{
 	return;
 }
 

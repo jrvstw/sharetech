@@ -5,9 +5,12 @@
 	<title><?php echo $title; ?></title>
 </head>
 <body>
-	<?php print_title($title); ?>
-	<?php print_menu($permission, $mode); ?>
-	<?php print_table($table); ?>
+	<div id="content">
+		<?php print_title($title); ?>
+		<?php print_table($table); ?>
+		<?php print_menu($permission, $mode); ?>
+	</div>
+	<?php include_js(); ?>
 </body>
 </html>
 
