@@ -66,8 +66,12 @@ function fetch_IF($devs, $ip)
 		 */
 		$command = "$ip address show $dev";
 		exec($command, $output, $ret);
-		if ($ret != 0)
-			alert("Error $ret executing $command");
+		if ($ret != 0) {
+			$attr["ip"] = "error:$ret";
+			$attr["mask"] = "error:$ret";
+			$attr["connect"] = "error:$ret";
+			//alert("Error $ret executing $command");
+		}
 		$output = implode($output, " ");
 		$pattern = "/ inet ([0-9\.]+)\/([0-9]+) /";
 		if (preg_match($pattern, $output, $match)) {
@@ -95,8 +99,6 @@ function fetch_IF($devs, $ip)
 		 */
 		$command = "$ip -s link show $dev";
 		exec($command, $output, $retVal);
-		if ($retVal != 0)
-			alert("Error $retVal executing $command");
 		$output = implode($output, "\n");
 
 		$pattern = "/ RX: bytes [^\n]*\n +([0-9]+) +([0-9]+) +([0-9]+) /";
@@ -104,16 +106,24 @@ function fetch_IF($devs, $ip)
 			$attr["rx_flow"] = $match[1];
 			$attr["rx_pack"] = $match[2];
 			$attr["rx_error"] = $match[3];
-		} else
-			alert("Error matching string with command $command");
+		} else {
+			$attr["rx_flow"] = "error:$ret";
+			$attr["rx_pack"] = "error:$ret";
+			$attr["rx_error"] = "error:$ret";
+			//alert("Error matching string with command $command");
+		}
 
 		$pattern = "/TX: bytes [^\n]*\n +([0-9]+) +([0-9]+) +([0-9]+) /";
 		if (preg_match($pattern, $output, $match)) {
 			$attr["tx_flow"] = $match[1];
 			$attr["tx_pack"] = $match[2];
 			$attr["tx_error"] = $match[3];
-		} else
-			alert("Error matching string with command $command");
+		} else {
+			$attr["tx_flow"] = "error:$ret";
+			$attr["tx_pack"] = "error:$ret";
+			$attr["tx_error"] = "error:$ret";
+			//alert("Error matching string with command $command");
+		}
 
 		$table[] = $attr;
 	}

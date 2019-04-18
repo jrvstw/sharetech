@@ -183,7 +183,7 @@ function print_menu($permission, $mode)
 {
 	echo "<br><div class=\"menu\">&emsp;";
 	if ($mode == "add") {
-		echo "<form id=\"add\" name=\"add\" method=\"post\" onmouseover=\"return validateAdd(this);\">" .
+		echo "<form id=\"add\" name=\"add\" method=\"post\" onsubmit=\"return validateAdd(this);\">" .
 			"<button type=\"submit\" name=\"submit\" value=\"add\">OK</button>" .
 			"</form>&emsp;" .
 			"<button onclick=\"history.back()\">Cancel</button>";
