@@ -13,6 +13,6 @@ $file_size = 3500;
  *   cpu loading 3 highest pid and their instructiono
  */
 
-$time = date("Ymd_his", time());
+$time = time();
 echo $time;
 
