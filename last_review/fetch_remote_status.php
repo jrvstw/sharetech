@@ -4,11 +4,16 @@
 
 $file_site = "http://192.168.195.151/malware/statistics.php";
 $url_site = "http://192.168.195.151/malware/statistics_url.php";
+
 $stat_file = get_statistics($file_site);
 $stat_url = get_statistics($url_site);
 
 var_export($stat_file);
 var_export($stat_url);
+
+/*
+ * End of main function
+ */
 
 function get_statistics($site)
 {
