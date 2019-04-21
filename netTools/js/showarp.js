@@ -1,31 +1,26 @@
 
+function someChecked(list)
+{
+	var someChecked = false;
+	if (list.length == undefined)
+		return list.checked;
+	else
+		for (var i = 0; i < list.length; i++)
+			if (list[i].checked == true)
+				return true;
+	return false;
+}
+
 function checkDelButton()
 {
-	var checkboxes = document.forms["del"]["checked[]"]
-	var someChecked = false;
-	if (checkboxes.length == undefined)
-		someChecked = checkboxes.checked;
-	else {
-		for (var i = 0; i < checkboxes.length; i++)
-			if (checkboxes[i].checked == true) {
-				someChecked = true;
-				break;
-			}
-	}
-	document.forms["del"]["submit"].disabled = !someChecked;
+	var list = document.forms["del"]["checked[]"]
+	document.forms["del"]["submit"].disabled = !someChecked(list);
 }
 
 function validateDelete()
 {
-	var checkboxes = document.getElementsByName("checked[]");
-	var someChecked = false;
-	for (var i = 0; i < checkboxes.length; i++)
-		if (checkboxes[i].checked == true) {
-			someChecked = true;
-			break;
-		}
-
-	if (someChecked == false) {
+	var list = document.forms["del"]["checked[]"]
+	if (someChecked(list) == false) {
 		alert("Please select at least one entry.");
 		return false;
 	} else if (confirm("Are you sure to delete?"))

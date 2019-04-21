@@ -6,9 +6,7 @@
 </head>
 <body>
 	<div id="content">
-		<?php print_title($title); ?>
-		<?php print_table($table); ?>
-		<?php print_menu($permission, $mode); ?>
+		<?php print_content($title, $table, $mode, $permission, $buttons); ?>
 	</div>
 	<?php include_js(); ?>
 </body>

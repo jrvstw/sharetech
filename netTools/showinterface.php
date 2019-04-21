@@ -38,7 +38,7 @@ include("xhtml/showtable.html");
  *  	to_ip($mask)
  *  function alert($string)
  *  print_title($title)
- *  print_menu($permission, $mode)
+ *  print_buttons($permission, $mode)
  *  print_table($table)
  *  include_js()
  */
@@ -152,7 +152,7 @@ function print_title($title)
 	return;
 }
 
-function print_menu($permission, $mode)
+function print_buttons($permission, $mode)
 {
 	return;
 }

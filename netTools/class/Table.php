@@ -13,8 +13,8 @@ class Table {
 	 * setting $column:
 	 *
 	 * $column = array(
-	 * 		array("start" =>  0, "length" => 15),
-	 * 		array("start" => 33, "length" => 17)
+	 * 		array("offset" =>  0, "length" => 15),
+	 * 		array("offset" => 33, "length" => 17)
 	 * );
 	 */
 	function get_table($command, $offset, $length, $column = null)
@@ -64,7 +64,7 @@ class Table {
 	{
 		foreach ($input as $row => $line)
 			foreach ($column as $col => $range)
-				$output[$row][$col] = trim(substr($line, $range["start"], $range["length"]));
+				$output[$row][$col] = trim(substr($line, $range["offset"], $range["length"]));
 		return $output;
 	}
 
