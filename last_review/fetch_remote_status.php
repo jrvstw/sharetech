@@ -4,12 +4,17 @@
 
 $file_site = "http://192.168.195.151/malware/statistics.php";
 $url_site = "http://192.168.195.151/malware/statistics_url.php";
+$output_location = "/var/www/html/sharetech/last_review/statuslog/remote.txt";
 
+/*
 $stat_file = get_statistics($file_site);
 $stat_url = get_statistics($url_site);
 
-echo my_export($stat_file) . "\n";
-echo my_export($stat_url);
+$output = my_export($stat_file) . "\n" . my_export($stat_url);
+ */
+$output = "time,total,version,pkg1a,pkg1b,pkg1c,pkg2a,pkg2b,pkg2c," . "\n" .
+	"time2,total2,version2,pkg3a,pkg3b,pkg3c,pkg4a,pkg4b,pkg4c,";
+write($output, $output_location);
 
 /*
  * End of main function
@@ -62,5 +67,10 @@ function my_export($data)
 	foreach ($data["update"] as $package => $info)
 		$output .= $info[0] . "," . $info[1] . "," . $info[2] . ",";
 	return $output;
+}
+
+function write($content, $output_location)
+{
+	file_put_contents($output_location, $content, LOCK_EX);
 }
 

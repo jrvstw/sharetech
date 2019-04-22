@@ -6,8 +6,11 @@ session_start();
 /*
  */
 $allowed_try = 5;
-$timeout = 10;
+$timeout = 300;
 $account = array("admin" => "admin");
+
+$file_local = "/var/www/html/sharetech/last_review/statuslog/log.txt";
+$file_remote = "/var/www/html/sharetech/last_review/statuslog/remote.txt";
 
 /*
  * If user tries too many times, stop loadind this page.
@@ -31,8 +34,12 @@ if (isset($_POST["operation"])) {
 	switch ($_POST["operation"]) {
 
 	case "Log in":
-		if ($account[$_POST["uname"]] == $_POST["pswd"])
+		if ($account[$_POST["uname"]] == $_POST["pswd"]) {
 			$_SESSION["login_uname"] = $_POST["uname"];
+			$_SESSION["tried_times"] = 0;
+		} else {
+			$_SESSION["tried_times"]++;
+		}
 		break;
 
 	case "Log out":
@@ -57,8 +64,8 @@ if (empty($_SESSION["login_uname"])) {
 /*
  * User gets permission. Load the page.
  */
-show_logout_form();
-echo "Restricted area.<br>";
+
+include "xhtml/default.html";
 
 /*
  * Functions
@@ -78,6 +85,13 @@ function show_login_form()
 	';
 }
 
+function print_content($file_local, $file_remote)
+{
+	show_logout_form();
+	show_local_status($file_local);
+	show_remote_status($file_remote);
+}
+
 function show_logout_form()
 {
 	echo '
@@ -85,6 +99,25 @@ function show_logout_form()
 			<button type="submit" name="operation" value="Log out">Log out</button>
 		</form>
 	';
+}
+
+function show_local_status($file_local)
+{
+	$content = file($file_local);
+	echo "<table border=1>" .
+		"<tr><td colspan=8>Local System Status</td></tr><tr>" .
+		"<td>Time</td><td>Load avg</td><td>Tasks</td><td>Running</td>" .
+		"<td>% CPU</td><td>Proc 1</td><td>Proc 2</td><td>Proc 3</td></tr>";
+	echo "</table>";
+}
+
+function show_remote_status($file_remote)
+{
+	$content = file($file_remote);
+	echo "<table border=1>" .
+		"<tr><td>Remote Server Status</td></tr>" .
+		"<tr>" .
+		"</table>";
 }
 
 		/*
