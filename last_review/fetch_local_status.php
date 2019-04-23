@@ -1,36 +1,36 @@
 <?php
 
-//$dir = "/HDD/STATUSLOG";
-//$dir = "/home/sharetechrd33/sharetech/last_review/statuslog";
-$dir = "/var/www/html/sharetech/last_review/statuslog";
-$conf_location = "$dir/conf.ini";
-$output_location = "$dir/log.txt";
-
 /*
- * V time
- *   load average
- *   task amount
- *   running task amount
- *   cpu usage
- *   cpu loading 3 highest pid and their instruction
+ * 1. setup
  */
-
-$conf = parse_ini_file($conf_location);
+$dir = "/var/www/html/statuslog";
 
 /*
+ * 2. grab content every time interval
+ */
+$conf_location = "$dir/conf.ini";
+$output_location = "$dir/local.txt";
+$conf = parse_ini_file($conf_location);
 $min = date("i", time());
 if ((intval($min) % $conf["refresh"]) != 0) {
 	return;
 }
- */
-
 $stat_local = get_statistics();
+
+/*
+ * 3. prepend to file
+ */
 //for ($i = 0; $i < 3495; $i++)
-append($stat_local, $output_location, $conf["line_limit"]);
-//echo my_export($stat_local);
+prepend($stat_local, $output_location, $conf["line_limit"]);
 
 /*
  * Functions overview
+ * --------------------------------
+ * get_statistics()
+ *  |- parse_and_grab($content, &$ptr, $open, $close)
+ * prepend($stat_local, $output_location, $limit)
+ *  |- my_export($stat)
+{
  */
 function get_statistics()
 {
@@ -44,12 +44,12 @@ function get_statistics()
 	$stat["avg1"] = parse_and_grab($output, $ptr, ": ", ",");
 	$stat["avg2"] = parse_and_grab($output, $ptr, " ", ",");
 	$stat["avg3"] = parse_and_grab($output, $ptr, " ", " ");
-	$stat["tasks"] = parse_and_grab($output, $ptr, "Tasks: ", " ");
+	$stat["tasks"] = trim(parse_and_grab($output, $ptr, "Tasks: ", "tot"));
 	$stat["running"] = trim(parse_and_grab($output, $ptr, ",", " run"));
 	$stat["cpu_us"] = trim(parse_and_grab($output, $ptr, "(s):", " us"));
 	$stat["cpu_sy"] = trim(parse_and_grab($output, $ptr, ",", " sy"));
 	$stat["cpu_ni"] = trim(parse_and_grab($output, $ptr, ",", " ni"));
-	$stat["cpu_id"] = 100 - floatval(trim(parse_and_grab($output, $ptr, ",", " id")));
+	$stat["cpu_id"] =trim(parse_and_grab($output, $ptr, ",", " id"));
 
 	$command = "ps axho pid,args --sort -pcpu | head -n 3";
 	exec($command, $output, $ret);
@@ -67,40 +67,39 @@ function parse_and_grab($content, &$ptr, $open, $close)
 	return substr($content, $ptr0, $ptr - $ptr0 - strlen($close));
 }
 
-function my_export($stat)
-{
-	$output = $stat["time"] . "," .
-		$stat["avg1"] . "," .
-		$stat["avg2"] . "," .
-		$stat["avg3"] . "," .
-		$stat["tasks"] . "," .
-		$stat["running"] . "," .
-		$stat["cpu_us"] . "," .
-		$stat["cpu_sy"] . "," .
-		$stat["cpu_ni"] . "," .
-		$stat["cpu_id"] . ",";
-	foreach ($stat["proc"] as $proc)
-		$output .= $proc[0] . "," . $proc[1] . ",";
-	return $output;
-}
-
-function modify_ini()
-{
-	$conf = parse_ini_file($conf_location);
-	$put = "refresh = " . $conf["refresh"] .
-		"\nline_limit = " . $conf["line_limit"];
-	file_put_contents($conf_location, $put, LOCK_EX);
-}
-
-function append($stat_local, $output_location, $limit)
+function prepend($stat_local, $output_location, $limit)
 {
 	$lines = file($output_location);
 	while (count($lines) >= $limit)
 		array_pop($lines);
-	$content = substr(my_export($stat_local), 0, -1) . "\n";
+	$content = my_export($stat_local) . "\n";
+	//echo $content;
 	foreach ($lines as $line)
 		$content .= $line;
-	//return $content;
-	file_put_contents($output_location, $content, LOCK_EX);
+	$handle = fopen($output_location, "w+");
+	fwrite($handle, $content);
+}
+
+function my_export($stat)
+{
+	$pcpu = 100 - floatval($stat["cpu_id"]);
+	$output = $stat["time"] . "," .
+		$stat["avg1"] . "," .
+		/*
+		$stat["avg2"] . "," .
+		$stat["avg3"] . "," .
+		 */
+		$stat["tasks"] . "," .
+		$stat["running"] . "," .
+		/*
+		$stat["cpu_us"] . "," .
+		$stat["cpu_sy"] . "," .
+		$stat["cpu_ni"] . "," .
+		$stat["cpu_id"] . ",";
+		 */
+		sprintf("%.1f,", $pcpu);
+	foreach ($stat["proc"] as $proc)
+		$output .= "[" . $proc[0] . "] " . $proc[1] . ",";
+	return substr($output, 0, -1);
 }
 
