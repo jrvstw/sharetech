@@ -1,2 +1,2 @@
-time,total,version,pkg1a,pkg1b,pkg1c,pkg2a,pkg2b,pkg2c,
-time2,total2,version2,pkg3a,pkg3b,pkg3c,pkg4a,pkg4b,pkg4c,
+time|total|version,pkg1a|pkg1b|pkg1c|pkg1d,pkg2a|Hkg2b|pkg2c|pkg2d
+time2|total2|version2,pkg1a|pkg1b|pkg1c|pkg1d,pkg2a|Hkg2b|pkg2c|pkg2d

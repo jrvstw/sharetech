@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="style/default.css" rel="stylesheet" type="text/css">
 	<title>Test</title>
 </head>
 <body>
+	<div class="fixed-top">
+		<?php print_nav(); ?>
+	</div>
 	<div id="content">
-		<?php print_content($file_local, $file_remote, $page, $refresh, $allowed_refresh, $per_page); ?>
+		<?php print_content($file_local, $file_remote, $page, $per_page, $refresh, $allowed_refresh); ?>
 	</div>
 </body>
 </html>
