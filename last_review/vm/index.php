@@ -17,13 +17,13 @@ session_start();
 $account = array("admin" => "admin");
 $allowed_try = 5;
 $timeout = 300;
-$file_local = "/var/www/html/statuslog/local.txt";
-$file_remote = "/var/www/html/statuslog/remote.txt";
-$conf_location = "/var/www/html/statuslog/conf.ini";
+$file_local = "/HDD/STATUSLOG/local.txt";
+$file_remote = "/HDD/STATUSLOG/remote.txt";
+$conf_location = "/HDD/STATUSLOG/conf.ini";
 $per_page = 5;
 $allowed_update = array(1, 3, 5);
-//$update_command ="/PGRAM/php/bin/php /PDATA/apache/fetch_remote_status.php";
-$update_command = "php /var/www/html/fetch_remote_status.php";
+$update_command ="/PGRAM/php/bin/php /PDATA/apache/fetch_remote_status.php";
+//$update_command = "php /var/www/html/fetch_remote_status.php";
 
 /*
  * 2.

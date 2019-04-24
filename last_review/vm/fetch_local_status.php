@@ -3,7 +3,7 @@
 /*
  * 1. setup
  */
-$dir = "/var/www/html/statuslog";
+$dir = "/HDD/STATUSLOG";
 $line_limit = 3500;
 
 /*
