@@ -4,7 +4,7 @@
  */
 $file_site = "http://192.168.195.151/malware/statistics.php";
 $url_site = "http://192.168.195.151/malware/statistics_url.php";
-$output_location = "/var/www/html/statuslog/remote.txt";
+$output_location = "statuslog/remote.txt";
 
 /*
  * 2. grab content
