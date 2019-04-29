@@ -1,6 +1,6 @@
 <?php
 
-$file = "1.eml";
+$file = $argv[1];
 
 $data = array();
 $fp = fopen($file, 'r');
