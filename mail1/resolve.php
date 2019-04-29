@@ -19,36 +19,46 @@ function parse_mail(&$fp, &$data)
 
 function parse_header(&$fp, &$data)
 {
-	$end = parse_attr($fp, $data, null);
-	parse_attrs($fp, $data, trim($end));
+	$line = fgets($fp);
+	$next = parse_attr($fp, $data, $line);
+	parse_attrs_list($fp, $data, $next);
 }
 
 function parse_attr(&$fp, &$data, $start)
 {
-	$line = $start;
-	while (trim($line) != "") {
-		$data["header"][] = $line;
+	$attr = trim($start);
+	$line = fgets($fp);
+	while (substr($line, 0, 1) == "\t") {
+		$attr .= " " . trim($line);
 		$line = fgets($fp);
 	}
+	$delim = strpos($attr, ":");
+	$key = substr($attr, 0, $delim);
+	$value = substr($attr, $delim + 2);
+	if ($key == "Received")
+		$data[$key][] = $value;
+	else
+		$data[$key] = $value;
+	return $line;
 }
 
-function parse_attrs(&$fp, &$data, $start)
+function parse_attrs_list(&$fp, &$data, $start)
 {
-	if ($start == "")
+	if (trim($start) == "")
 		return;
-	$end = parse_attr($fp, $data, $start);
-	parse_attrs($fp, $data, trim($end));
+	$next = parse_attr($fp, $data, $start);
+	parse_attrs_list($fp, $data, $next);
 }
 
 function parse_content(&$fp, &$data)
 {
 	$line = fgets($fp);
-	while (trim($line) == "") {
+	while (trim($line) == "")
 		$line = fgets($fp);
-	}
-	while (trim($line) != "</html>") {
-		$data["body"][] = $line;
-		$line = fgets($fp);
-	}
+
+	$content = $line;
+	while (($line = fgets($fp)) != false)
+		$content .= $line;
+	$data[] = $content;
 }
 
