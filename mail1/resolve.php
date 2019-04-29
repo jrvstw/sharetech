@@ -23,14 +23,6 @@ function parse_header(&$fp, &$data)
 	parse_attrs($fp, $data, trim($end));
 }
 
-function parse_attrs(&$fp, &$data, $start)
-{
-	if ($start == "")
-		return;
-	$end = parse_attr($fp, $data, $start);
-	parse_attrs($fp, $data, trim($end));
-}
-
 function parse_attr(&$fp, &$data, $start)
 {
 	$line = $start;
@@ -38,6 +30,14 @@ function parse_attr(&$fp, &$data, $start)
 		$data["header"][] = $line;
 		$line = fgets($fp);
 	}
+}
+
+function parse_attrs(&$fp, &$data, $start)
+{
+	if ($start == "")
+		return;
+	$end = parse_attr($fp, $data, $start);
+	parse_attrs($fp, $data, trim($end));
 }
 
 function parse_content(&$fp, &$data)
