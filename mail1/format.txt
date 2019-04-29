@@ -1,0 +1,37 @@
+Mail:
+    [:head:][:body:]
+
+header:
+    [:attr:]+\n+
+
+attr:
+    [:name:]: [:values:]\n
+
+values:
+    ([:value:]([\n\t|;][:value:])*)?
+
+name:
+    [a-zA-Z-]+
+
+value:
+    [^;\n]+
+
+body:
+    [:content:]
+
+content:
+    ([:start:][:attr:]*\n[:content:])+[:end:]
+    [:plain:]
+
+start:
+    [:boundary:]\n
+
+end:
+    [:boundary:]--\n\n
+
+boundary:
+    A unique string that is predefined for each content.
+
+plain:
+    Content that doesn't start with the boundary.
+
