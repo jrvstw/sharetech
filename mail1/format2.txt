@@ -30,5 +30,5 @@ value:
     [^;]+
 
 boundary:
-    A unique string that is predefined for each content.
+    A unique string that is predefined for each level.
 
