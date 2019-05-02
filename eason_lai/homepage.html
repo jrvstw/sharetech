@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" >
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+		<script src="../js/default.js" ></script>
+		<script src="../js/goWhere.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../style/work7.css">
+		<title>Homepage</title>
+	</head>
+	<body>
+		<div class="top-menu">
+			<div class="top-text">
+				<img class="sp-default-logo hidden-xs" src="../images/web-logo.png">
+				<b>Hello! <?php echo $_SESSION["account"]; ?></b>
+				<div class="btn-group btn-group-toggle" data-toggle="buttons">
+					<label class="btn btn-outline-dark btn-sm mouse-pointer <?php echo $active[min1]; ?>">
+						<input name="refresh" type="radio" autocomplete="off" <?php echo $checked[min1]; ?>> 1 min
+					</label>
+					<label class="btn btn-outline-dark btn-sm mouse-pointer <?php echo $active[min3]; ?>">
+						<input name="refresh" type="radio" autocomplete="off" <?php echo $checked[min3]; ?>> 3 min
+					</label>
+					<label class="btn btn-outline-dark btn-sm mouse-pointer <?php echo $active[min5]; ?>">
+						<input name="refresh" type="radio" autocomplete="off" <?php echo $checked[min5]; ?>> 5 min
+					</label>
+				</div>
+				<button type="button" class="btn btn-dark btn-sm" onclick="set_time()"> Set Time </button>
+				<button type="button" class="btn btn-info btn-sm" onclick="goARP()"> Show ARP </button>
+				<button type="button" class="btn btn-info btn-sm" onclick="goRoute()"> Show Route </button>
+				<button type="button" class="btn btn-info btn-sm" onclick="goInterface()"> Show InterFace </button>
+			</div>
+			<button type="button" class="btn btn-danger log-out-button btn-lg" onclick="sign_out()">Sign Out</button>
+		</div>
+		<div class="main-content">
+			<div class="right-content element">
+				<center>
+					<div class="btn-group" role="group" aria-label="Basic example">
+						<button type="button" class="btn btn-dark btn-sm" onclick="previous()">Previous Page</button>
+						<button type="button" class="btn btn-dark btn-sm disabled">
+							Now page: <span id="nowPage"><?php echo trim(floor($startPans/10)+1); ?></span>
+						</button>
+						<button type="button" class="btn btn-dark btn-sm" onclick="next()">Next Page</button>
+					</div>
+					<input type="number" id="keyInPage" placeholder="key number" >
+					<button type="button" class="btn btn-info btn-sm" onclick="goKeyInPage()"> Go This Page </button>
+				</center>
+				<table class="table table-bordered table-hover table-condensed table-striped">
+  					<thead>
+						<tr>
+							<th>CPU loading</th>
+							<th>TASK total</th>
+							<th>TASK running</th>
+							<th>CPU usage</th>
+							<th>1st PID</th>
+							<th>1st CPU</th>
+							<th>1st CMD</th>
+							<th>2nd PID</th>
+							<th>2nd CPU</th>
+							<th>2nd CMD</th>
+							<th>3rd PID</th>
+							<th>3rd CPU</th>
+							<th>3rd CMD</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php echo $outHtml; ?>
+					</tbody>
+				</table>	
+			</div>
+		</div>
+		<input type="hidden" id="diffTime" value="<?php echo trim($diffTime); ?>" >
+	    <footer>
+	      Copyright &copy 2019 ShareTech Information Co., Ltd. All rights reserved.
+	    </footer>
+	</body>
+</html>

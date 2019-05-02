@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Show Arp</title>
+		<link rel="stylesheet" type="text/css" href="../style/default0.css" >
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+		<script src="../js/default0.js" ></script>
+		<script src="../js/reload30s2.js" ></script>
+		<script src="../js/goWhere.js" ></script>
+	</head>
+	<body>
+		<div class = "container">
+			<h1 class="title">ARP Table</h1>
+			<table>
+				<thead title="ARP Table">
+					<tr>
+						<th>IP</th>
+						<th>MAC</th>
+						<th>InterFace</th>
+						<th>Edit</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<?php echo $list ?>
+				</tbody>
+			</table>
+			<div class="title2">Refresh Countdown  <span id="countdown">30</span> Sec</div>
+			<div id="edit_area">
+			<div class="title2 eth0">start add eth0</div>
+			<div class="eth0_area add">
+				<form action="add_arp.php" method="POST" onsubmit="return check_eth0_range();">
+			        IP: <input type="text" name="eth0IP" pattern="\d+\.\d+\.\d+\.\d+"
+			        placeholder="<?php echo implode('.',$eth0Range[0]).' ~ '.implode('.',$eth0Range[1]) ?>" required>
+			        MAC: <input type="text" name="eth0MAC" placeholder="ex. XX:XX:XX:XX:XX:XX"
+			        pattern="[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}" required>
+			        <input type="hidden" id="eth0Segment" value="<?php echo trim(implode('.',$eth0Range[0])); ?>" >
+					<input type="hidden" id="eth0Mask" value="<?php echo trim(implode('.',$eth0Range[2])); ?>" >
+			        <input type="submit" class="submitButton" value="add">
+			    </form>
+			</div>
+			<div class="title2 eth3">start add eth3</div>
+				<div class="eth3_area add">
+					<form action="add_arp.php" method="POST" onsubmit="return check_eth3_range();">
+						IP: <input type="text" name="eth3IP" pattern="\d+\.\d+\.\d+\.\d+"
+						placeholder="<?php echo implode('.',$eth3Range[0]).' ~ '.implode('.',$eth3Range[1]) ?>" required>
+						MAC: <input type="text" name="eth3MAC" placeholder="ex. XX:XX:XX:XX:XX:XX"
+				        pattern="[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}" required>
+				        <input type="hidden" id="eth3Segment" value="<?php echo trim(implode('.',$eth3Range[0])); ?>" >
+						<input type="hidden" id="eth3Mask" value="<?php echo trim(implode('.',$eth3Range[2])); ?>" >
+				        <input type="submit" class="submitButton" value="add">
+					</form>
+				</div>
+			</div>
+			<center>
+				<button type="button" class="submitButton" onclick="gohome()" > back </button>
+			</center>
+		</div>
+	</body>
+</html>
