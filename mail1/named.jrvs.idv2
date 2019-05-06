@@ -1,0 +1,11 @@
+$TTL 1D
+@   IN SOA master.jrvs.idv2. jarvis.mail.jrvs.idv2. ( 1 3H 15M 1W 1D )
+    IN NS master.jrvs.idv2.
+    IN MX 10 mail.jrvs.idv2.
+
+master.jrvs.idv2. IN A 192.168.189.33
+www.jrvs.idv2. IN A 192.168.189.33
+;www.jrvs.idv2. IN AAAA 70:85:c2:82:95:5c
+mail.jrvs.idv2. IN CNAME www.jrvs.idv2.
+
+
