@@ -23,6 +23,7 @@ function traverse_emls($path)
 function analyze_eml($file)
 {
 	$header = parse_mail($file);
+	// testing using "received"
 	if (array_key_exists("received", $header)) {
 		$id = $header["message-id"];
 		if (substr($id,0,1) == "<" and substr($id,-1) == ">")
