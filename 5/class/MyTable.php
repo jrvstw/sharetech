@@ -139,6 +139,7 @@ class MyTable
 
 	public function add_entry($writeData)
 	{
+		$query = "";
 		foreach ($writeData as $col => $value) {
 			$value = str_replace("\\", "\\\\", $value);
 			$value = str_replace("'", "\'", $value);

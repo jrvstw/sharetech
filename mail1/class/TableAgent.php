@@ -24,24 +24,24 @@ class TableAgent
 		$mysqli->select_db($this->dbName) or
 			die("connection to database failed");
 		$mysqli->query("set names utf8");
-		$result = $mysqli->query($query) or die("query failed: " . $query);
+		$result = $mysqli->query($query);
 		$mysqli->close();
 		return $result;
 	}
 
 	public function add_entry($writeData)
 	{
+		$query = "";
 		foreach ($writeData as $col => $value) {
 			$value = str_replace("\\", "\\\\", $value);
 			$value = str_replace("'", "\'", $value);
 			$query .= $col . "='" . $value . "', ";
 		}
-		unset($value);
 		$query = substr($query, 0, -2);
 		$query = "insert into " . $this->tbName . " set " . $query;
-		//$query = "insert into books set isbn='" . $_POST["isbn"] . "', " . $query;
-		$result = $this->query($query) or die("query failed");
-
+		$result = $this->query($query);
+		if ($result == false)
+			echo "query failed: $query\n";
 		return $result;
 	}
 
