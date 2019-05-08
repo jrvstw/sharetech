@@ -36,7 +36,7 @@ function parse_attr(&$fp, &$data, $start)
 	// merge incomplete lines into $line.
 	$attr = trim($start);
 	$line = fgets($fp);
-	while (substr($line, 0, 1) == "\t") {
+	while (preg_match('/^\s+/', $line)) {
 		$attr .= " " . trim($line);
 		$line = fgets($fp);
 	}
