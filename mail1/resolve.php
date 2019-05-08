@@ -2,11 +2,12 @@
 include_once "parse_mail.php";
 include_once "class/TableAgent.php";
 
+$type = ".eml";
 $path = $argv[1];
 $method = 'fetch_info';
 
 $output = array();
-traverse_emls($path, $method, $output);
+find_files($path, $method, $output);
 
 print_r($output);
 /*
@@ -33,7 +34,7 @@ function fetch_info($file, &$output)
 	return $output;
 }
 
-function traverse_emls($path, $method, &$output)
+function find_files($path, $method, &$output)
 {
 	if (is_dir($path) == false) {
 		if (substr($path, -4) == ".eml")
@@ -41,7 +42,7 @@ function traverse_emls($path, $method, &$output)
 	} elseif ($handle = opendir($path)) {
 		while (($entry = readdir($handle)) !== false)
 			if (substr($entry, 0, 1) != ".")
-				traverse_emls("$path/$entry", $method, $output);
+				find_files("$path/$entry", $method, $output);
 		closedir($handle);
 	}
 }
