@@ -6,8 +6,7 @@ $output = array();
 traverse_emls($argv[1], $output);
 
 print_r($output);
-$my_table = new TableAgent("work5", "ad_mail", "jarvis", "localhost",
-	"27050888");
+$my_table = new TableAgent("work5", "ad_mail", "jarvis", "localhost", "27050888");
 foreach ($output as $entry)
 	$my_table->add_entry($entry);
 
@@ -17,7 +16,7 @@ function traverse_emls($path, &$output)
 {
 	if (is_dir($path) == false) {
 		if (substr($path, -4) == ".eml")
-			deal_with_eml($path, $output);
+			fetch_info($path, $output);
 	} elseif ($handle = opendir($path)) {
 		while (($entry = readdir($handle)) !== false)
 			if (substr($entry, 0, 1) != ".")
@@ -26,7 +25,7 @@ function traverse_emls($path, &$output)
 	}
 }
 
-function deal_with_eml($file, &$output)
+function fetch_info($file, &$output)
 {
 	$mail = parse_mail($file);
 	if (array_key_exists("received", $mail["header"])) { // testing using "received"
@@ -52,6 +51,14 @@ function is_possibly_ad($header)
 	return 0;
 }
 
+function try_decode($string, $charset)
+{
+	if (substr($charset, 0, 4) == "big5")
+		return iconv("BIG-5", "UTF-8", $string);
+	//return mb_convert_encoding($string, "UTF-8", "BIG-5");
+	return $string;
+}
+
 function get_charset($mail)
 {
 	$value = $mail["header"]["content-type"];
@@ -60,13 +67,5 @@ function get_charset($mail)
 	if (($ptr = strpos($value, "charset=")) === false)
 		return "";
 	return strtolower(substr($value, $ptr + strlen("charset=")));
-}
-
-function try_decode($string, $charset)
-{
-	if ($charset == "big5")
-		return iconv("BIG-5", "UTF-8", $string);
-	//return mb_convert_encoding($string, "UTF-8", "BIG-5");
-	return $string;
 }
 
