@@ -36,7 +36,7 @@ function parse_attr(&$fp, &$data, $start)
 	// merge incomplete lines into $line.
 	$attr = trim($start);
 	$line = fgets($fp);
-	while (preg_match('/^\s+/', $line)) {
+	while (preg_match('/^\s+[^\s]/', $line)) {
 		$attr .= " " . trim($line);
 		$line = fgets($fp);
 	}
@@ -44,10 +44,7 @@ function parse_attr(&$fp, &$data, $start)
 	$delim = strpos($attr, ":");
 	$key = strtolower(substr($attr, 0, $delim));
 	$value = substr($attr, $delim + 2);
-	if ($key == "received")
-		$data[$key][] = $value;
-	else
-		$data[$key] = $value;
+	$data[$key][] = $value;
 	return $line;
 }
 
