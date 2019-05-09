@@ -10,9 +10,11 @@ $output = array();
 find_files($path, $action, $output);
 
 print_r($output);
+/*
 $my_table = new TableAgent("work5", "mails", "jarvis", "localhost", "27050888");
 foreach ($output as $entry)
 	$my_table->add_entry($entry);
+ */
 
 return;
 
@@ -31,6 +33,7 @@ function fetch_info($file, &$output)
 		$epaper = find_feature($mail["header"]);
 		$subject = get_subject($mail["header"]["subject"][0], get_charset($mail));
 		$output[] = array(
+			//"file" => $file,
 			"user-agent" => $mailer,
 			"message-id" => $mid,
 			"epaper" => $epaper,
