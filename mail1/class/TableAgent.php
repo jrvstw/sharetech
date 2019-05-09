@@ -2,11 +2,11 @@
 
 class TableAgent
 {
-	private $dbName;
-	private $tbName;
-	private $userName;
-	private $hostName;
-	private $passwd;
+	protected $dbName;
+	protected $tbName;
+	protected $userName;
+	protected $hostName;
+	protected $passwd;
 
 	function __construct($db, $tb, $user, $host, $pswd)
 	{
@@ -17,7 +17,7 @@ class TableAgent
 		$this->passwd = $pswd;
 	}
 
-	private function query($query)
+	protected function query($query)
 	{
 		$mysqli = new mysqli($this->hostName, $this->userName, $this->passwd)
 			or die("Connection failed: " . $conn->connect_error);
@@ -26,22 +26,6 @@ class TableAgent
 		$mysqli->query("set names utf8");
 		$result = $mysqli->query($query);
 		$mysqli->close();
-		return $result;
-	}
-
-	public function add_entry($writeData)
-	{
-		$query = "";
-		foreach ($writeData as $col => $value) {
-			$value = str_replace("\\", "\\\\", $value);
-			$value = str_replace("'", "\'", $value);
-			$query .= "`" . $col . "`='" . $value . "', ";
-		}
-		$query = substr($query, 0, -2);
-		$query = "insert into " . $this->tbName . " set " . $query;
-		$result = $this->query($query);
-		if ($result == false)
-			echo "query failed: $query\n";
 		return $result;
 	}
 

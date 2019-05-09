@@ -1,20 +1,24 @@
 <?php
 include_once "parse_mail.php";
-include_once "class/TableAgent.php";
+include_once "class/MailDBAgent.php";
 
 $type = ".eml";
 $path = $argv[1];
 $action = 'fetch_info';
+$my_table = new MailDBAgent("work5", "mails", "jarvis", "localhost", "27050888");
 
 $output = array();
 find_files($path, $action, $output);
 
-print_r($output);
 /*
-$my_table = new TableAgent("work5", "mails", "jarvis", "localhost", "27050888");
-foreach ($output as $entry)
-	$my_table->add_entry($entry);
+$filter = array(
+	'message-id' => '%sharetech%',
+	'subject' => '%randoll%',
+);
  */
+$output = $my_table->filter($filter);
+print_r($output);
+//$my_table->overwrite($output);
 
 return;
 
