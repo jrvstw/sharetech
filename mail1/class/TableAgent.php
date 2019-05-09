@@ -35,7 +35,7 @@ class TableAgent
 		foreach ($writeData as $col => $value) {
 			$value = str_replace("\\", "\\\\", $value);
 			$value = str_replace("'", "\'", $value);
-			$query .= $col . "='" . $value . "', ";
+			$query .= "`" . $col . "`='" . $value . "', ";
 		}
 		$query = substr($query, 0, -2);
 		$query = "insert into " . $this->tbName . " set " . $query;
