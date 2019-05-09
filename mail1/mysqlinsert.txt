@@ -1,8 +1,8 @@
 create table mails (
-    -> id int(8) not null auto_increment primary key,
-    -> message_id varchar(1000) not null,
-    -> user_agent varchar(100) not null,
-    -> epaper varchar(100),
-    -> subject varchar(1000) not null
-    -> ) default charset=utf8;
+       id int(8) not null auto_increment primary key,
+       message-id varchar(1000) not null unique,
+       user-agent varchar(100) not null,
+       epaper varchar(100),
+       subject varchar(1000) not null
+       ) default charset=utf8;
 
