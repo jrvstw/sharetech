@@ -15,8 +15,8 @@ $filter = array(
 	'message-id' => '%sharetech%',
 	'subject' => '%randoll%',
 );
- */
 $output = $my_table->filter($filter);
+ */
 print_r($output);
 //$my_table->overwrite($output);
 

@@ -30,7 +30,9 @@ class MailDBAgent extends TableAgent
 	public function overwrite($writeData)
 	{
 		$this->query("truncate $this->tbName");
+		$this->query("alter table $this->tbName drop index `message-id`");
 		$this->add_entries($writeData);
+		$this->query("alter table $this->tbName add fulltext(`message-id`)");
 	}
 
 	public function filter($conditions)
