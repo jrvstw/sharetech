@@ -2,30 +2,54 @@
 include_once "parse_mail.php";
 include_once "class/MailDBAgent.php";
 
-$path    = $argv[1];
-$pattern = '/^[0-9]{4,}$/';
-//$pattern = '/.eml$/';
-$action  = 'fetch_info';
+/*
+ * 1. setup
+ */
+$mode    = $argv[1];
+$path    = $argv[2];
+$pattern = '/^[0-9]{2,}$/';
 $mail_db = new MailDBAgent("work5", "jarvis", "localhost", "27050888");
 $table   = "mails2";
+//$pattern = '/.eml$/';
 
+/*
+ * 2. fetch
+ */
 $output = array();
-find_files($path, $pattern, $action, $output);
+find_files($path, $pattern, $output);
 
-//print_r($output);
-$mail_db->overwrite($output, $table);
+/*
+ * 3. output
+ */
+if ($mode == "p")
+	print_r($output);
+elseif ($mode == "w")
+	$mail_db->overwrite($output, $table);
+elseif ($mode == "a")
+	$mail_db->append($output, $table);
+else
+	exit("invalid format");
 
 return;
 
-function find_files($path, $pattern, $action, &$output)
+/*
+ * functions overview
+ * ------------------------------------
+ * find_files($path, $pattern, &$output)
+ *  |- fetch_info($file, &$output)
+ * 		|- find_feature($header)
+ * 		|- get_subject($subject, $charset)
+ * 		|- get_charset($mail)
+ */
+function find_files($path, $pattern, &$output)
 {
 	if (is_dir($path) == false) {
 		if (preg_match($pattern, basename($path)))
-			$action($path, $output);
+			fetch_info($path, $output);
 	} elseif ($handle = opendir($path)) {
 		while (($entry = readdir($handle)) !== false)
 			if (substr($entry, 0, 1) != ".")
-				find_files("$path/$entry", $pattern, $action, $output);
+				find_files("$path/$entry", $pattern, $output);
 		closedir($handle);
 	}
 }
@@ -60,6 +84,8 @@ function fetch_info($file, &$output)
 			"subject" => $subject
 		);
 		echo "done";
+	} else {
+		echo "skipped";
 	}
 	echo "\n";
 	return $output;
@@ -82,8 +108,8 @@ function get_subject($subject, $charset)
 	if (substr($subject, 0, 1) == "=") {
 		if (substr($subject, 2, 6) == "gb2312")
 			$subject = substr_replace($subject, "gbk", 2, 6);
-		return mb_decode_mimeheader($subject);
-		//return iconv_mime_decode($subject);
+		//return mb_decode_mimeheader($subject);
+		return iconv_mime_decode($subject);
 	} elseif (substr($charset, 0, 4) == "big5") {
 		return iconv("BIG-5", "UTF-8", $subject);
 	} else {
