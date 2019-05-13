@@ -2,62 +2,67 @@
 include_once "parse_mail.php";
 include_once "class/MailDBAgent.php";
 
-$type = ".eml";
-$path = $argv[1];
-$action = 'fetch_info';
-$my_table = new MailDBAgent("work5", "mails", "jarvis", "localhost", "27050888");
+$path    = $argv[1];
+$pattern = '/^[0-9]{4,}$/';
+//$pattern = '/.eml$/';
+$action  = 'fetch_info';
+$mail_db = new MailDBAgent("work5", "jarvis", "localhost", "27050888");
+$table   = "mails2";
 
 $output = array();
-find_files($path, $action, $output);
+find_files($path, $pattern, $action, $output);
 
-/*
-$filter = array(
-	'message-id' => '%sharetech%',
-	'subject' => '%randoll%',
-);
-$output = $my_table->filter($filter);
- */
-print_r($output);
-//$my_table->overwrite($output);
+//print_r($output);
+$mail_db->overwrite($output, $table);
 
 return;
 
-function fetch_info($file, &$output)
-{
-	$mail = parse_mail($file);
-	if (array_key_exists("x-mailer", $mail["header"]))
-		$mailer = "X-mailer: " . $mail["header"]["x-mailer"][0];
-	if (array_key_exists("user-agent", $mail["header"]))
-		$mailer = "User-agent: " . $mail["header"]["user-agent"][0];
-	if (isset($mailer)) {
-		$mid = $mail["header"]["message-id"][0];
-		if (substr($mid,0,1) == "<" and substr($mid,-1) == ">")
-			$mid = substr($mid, 1, -1);
-
-		$epaper = find_feature($mail["header"]);
-		$subject = get_subject($mail["header"]["subject"][0], get_charset($mail));
-		$output[] = array(
-			//"file" => $file,
-			"user-agent" => $mailer,
-			"message-id" => $mid,
-			"epaper" => $epaper,
-			"subject" => $subject
-		);
-	}
-	return $output;
-}
-
-function find_files($path, $action, &$output)
+function find_files($path, $pattern, $action, &$output)
 {
 	if (is_dir($path) == false) {
-		if (substr($path, -4) == ".eml")
+		if (preg_match($pattern, basename($path)))
 			$action($path, $output);
 	} elseif ($handle = opendir($path)) {
 		while (($entry = readdir($handle)) !== false)
 			if (substr($entry, 0, 1) != ".")
-				find_files("$path/$entry", $action, $output);
+				find_files("$path/$entry", $pattern, $action, $output);
 		closedir($handle);
 	}
+}
+
+function fetch_info($file, &$output)
+{
+	echo "$file: ";
+	$mail = parse_mail($file);
+	if (array_key_exists("x-mailer", $mail["header"])) {
+		$ua = "X-mailer";
+		$ua_value = $mail["header"]["x-mailer"][0];
+	}
+	if (array_key_exists("user-agent", $mail["header"])) {
+		$ua = "User-agent";
+		$ua_value = $mailer["header"]["user-agent"][0];
+	}
+	if (isset($ua)) {
+		echo "fetching... ";
+		$m_id = $mail["header"]["message-id"][0];
+		if (substr($m_id,0,1) == "<" and substr($m_id,-1) == ">")
+			$m_id = substr($m_id, 1, -1);
+
+		$epaper = find_feature($mail["header"]);
+		$is_epaper = (empty($epaper))? 0: 1;
+		$subject = get_subject($mail["header"]["subject"][0], get_charset($mail));
+		$output[] = array(
+			"user-agent" => $ua,
+			"ua-value" => $ua_value,
+			"message-id" => $m_id,
+			"epaper" => $epaper,
+			"is-epaper" => $is_epaper,
+			"subject" => $subject
+		);
+		echo "done";
+	}
+	echo "\n";
+	return $output;
 }
 
 function find_feature($header)
@@ -65,21 +70,25 @@ function find_feature($header)
 	if (array_key_exists("list-unsubscribe", $header))
 		return "List-Unsubscribe:";
 	if (array_key_exists("precedence", $header)) {
+		$value = $header["precedence"][0];
 		if ($value == "bulk" or $value == "list")
-			return "Precedence: " . $header["precedence"][0];
+			return "Precedence: " . $value;
 	}
 	return null;
 }
 
 function get_subject($subject, $charset)
 {
-	if (substr($subject, 0, 1) == "=")
-		return iconv_mime_decode($subject);
-
-	if (substr($charset, 0, 4) == "big5")
+	if (substr($subject, 0, 1) == "=") {
+		if (substr($subject, 2, 6) == "gb2312")
+			$subject = substr_replace($subject, "gbk", 2, 6);
+		return mb_decode_mimeheader($subject);
+		//return iconv_mime_decode($subject);
+	} elseif (substr($charset, 0, 4) == "big5") {
 		return iconv("BIG-5", "UTF-8", $subject);
-
-	return $subject;
+	} else {
+		return $subject;
+	}
 }
 
 function get_charset($mail)
