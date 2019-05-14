@@ -5,7 +5,7 @@ include_once "class/MailDBAgent.php";
 /*
  * 1. setup
  */
-$mode    = $argv[1];
+$mode    = $argv[1]; // [p|w|a]
 $path    = $argv[2];
 //$pattern = '/.eml$/';
 $pattern = '/^[0-9]{2,}$/';

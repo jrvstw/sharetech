@@ -16,7 +16,7 @@ class DatabaseAgent
 		$this->passwd = $pswd;
 	}
 
-	protected function connect()
+	protected function open()
 	{
 		$this->mysqli = new mysqli($this->hostName, $this->userName, $this->passwd)
 			or die("Connection failed: " . $conn->connect_error);
@@ -25,7 +25,7 @@ class DatabaseAgent
 		$this->mysqli->query("set names utf8");
 	}
 
-	protected function disconnect()
+	protected function close()
 	{
 		$this->mysqli->close();
 	}

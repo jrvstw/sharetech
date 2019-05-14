@@ -5,21 +5,21 @@ class MailDBAgent extends DatabaseAgent
 {
 	public function append($writeData, $table)
 	{
-		$this->connect();
+		$this->open();
 		$this->query("alter table $table drop index `message-id`");
 		$this->add_entries($writeData, $table);
 		$this->query("alter table $table add fulltext(`message-id_2`)");
-		$this->disconnect();
+		$this->close();
 	}
 
 	public function overwrite($writeData, $table)
 	{
-		$this->connect();
+		$this->open();
 		$this->query("truncate $table");
 		$this->query("alter table $table drop index `message-id`");
 		$this->add_entries($writeData, $table);
 		$this->query("alter table $table add fulltext(`message-id_2`)");
-		$this->disconnect();
+		$this->close();
 	}
 
 	protected function add_entries($writeData, $table)
