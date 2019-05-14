@@ -1,26 +1,29 @@
 Mail:
-    [:header:][:content:]
-
-header:
-    [:attr:]+\n+
+	[:content:]
 
 content:
-    ([:start:][:header:][:content:])+[:end:]
+    [:headers:][:body:]
+
+headers:
+    [:header:]*\n+
+
+body:
+    ([:b_start:][:content:])+[:b_end:]
     [:plain:]
 
-attr:
-    [:name:]: [:values:]\n
+header:
+    [:key:]: [:values:]\n
 
-start:
-    [:boundary:]\n
+b_start:
+    --[:boundary:]\n
 
-end:
-    [:boundary:]--\n
+b_end:
+    --[:boundary:]--\n
 
 plain:
     A string that doesn't include [:boundary:].  [:plain:] must end with "\n".
 
-name:
+key:
     [a-zA-Z-]+
 
 values:
