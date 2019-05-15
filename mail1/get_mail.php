@@ -1,7 +1,7 @@
 <?php
-include_once "parse_mail.php";
+include_once "tools/parse_mail.php";
 
-$path = "tmp/1.eml";
+$path = $argv[1];
 $mail = parse_mail($path);
 print_r($mail);
 

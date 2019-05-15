@@ -1,37 +1,37 @@
 Mail:
-    [:head:][:body:]
-
-header:
-    [:attr:]+\n+
-
-attr:
-    [:name:]: [:values:]\n
-
-values:
-    ([:value:]([\n\t|;][:value:])*)?
-
-name:
-    [a-zA-Z-]+
-
-value:
-    [^;\n]+
-
-body:
-    [:content:]
+	[:content:]
 
 content:
-    ([:start:][:attr:]*\n[:content:])+[:end:]
+    [:headers:][:body:]
+
+headers:
+    [:header:]*\n+
+
+body:
+    ([:b_start:][:content:])+[:b_end:]
     [:plain:]
 
-start:
-    [:boundary:]\n
+header:
+    [:key:]: [:values:]\n
 
-end:
-    [:boundary:]--\n\n
+b_start:
+    --[:boundary:]\n
 
-boundary:
-    A unique string that is predefined for each content.
+b_end:
+    --[:boundary:]--\n
 
 plain:
-    Content that doesn't start with the boundary.
+    A string that doesn't include [:boundary:].  [:plain:] must end with "\n".
+
+key:
+    [a-zA-Z-]+
+
+values:
+    ([:value:](;[:value:])*)?
+
+value:
+    [^;]+
+
+boundary:
+    A unique string that is predefined for each level.
 

@@ -40,7 +40,8 @@ function get_boundary($header)
 	$ptr = strpos($value, "boundary=");
 	if ($ptr === false)
 		return null;
-	return trim(substr($value, $ptr + strlen("boundary=")), '"');
+	$ret = trim(substr($value, $ptr + strlen("boundary=")), '"');
+	return $ret;
 }
 
 /*

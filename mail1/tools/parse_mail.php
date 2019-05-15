@@ -6,26 +6,17 @@ function parse_mail($file)
 	$fp = fopen($file, 'r');
 	$mail = array();
 	$line = fgets($fp);
-	$boundary = false;
-	parse_content($fp, $mail, $line, $boundary);
+	$escape = false;
+	parse_content($fp, $mail, $line, $escape);
 	fclose($fp);
 	return $mail;
 }
 
-function parse_content(&$fp, &$data, $line, $boundary)
+function parse_content(&$fp, &$data, $line, $escape)
 {
-	$line = parse_headers($fp, $mail["header"], $line);
-	$sub_boundary = get_boundary($mail["header"]);
-	if ($sub_boundary == null) {
-		parse_body($fp, $mail["body"], $line, $sub_boundary);
-	} else {
-		while (trim($line) != "--$sub_boundary")
-			$line = fgets($fp);
-		while (trim($line) != "--$sub_boundary--") {
-			//$line = parse_body($fp, $mail["body"], $line, false);
-		}
-	}
-	return $line;
+	$line = parse_headers($fp, $data["header"], $line);
+	$boundary = get_boundary($data["header"]);
+	return parse_body($fp, $data["body"], $line, $escape, $boundary);
 }
 
 function parse_headers(&$fp, &$data, $line)
@@ -57,13 +48,27 @@ function parse_header(&$fp, &$data, $line)
 	return $line;
 }
 
-function parse_body(&$fp, &$data, $line, $boundary)
+function parse_body(&$fp, &$data, $line, $escape, $boundary)
 {
-	$content = "";
-	while ($line !== $boundary) {
-		$content .= $line;
-		$line = fgets($fp);
+	if ($boundary == null) {
+		$content = "";
+		while (escape($line, $escape) == false) {
+			$content .= $line;
+			$line = fgets($fp);
+		}
+		$data[] = $content;
+	} else {
+		while (trim($line) != "--$boundary" and trim($line) != "--$boundary--")
+			$line = fgets($fp);
+		while (trim($line) != "--$boundary--") {
+			$line = fgets($fp);
+			$line = parse_content($fp, $data[], $line, $boundary);
+		}
 	}
+	while (escape($line, $escape) == false)
+		$line = fgets($fp);
+	return $line;
+
 
 	if (empty($boundary)) {
 		$content = $line;
@@ -79,6 +84,15 @@ function parse_body(&$fp, &$data, $line, $boundary)
 		parse_body($fp, $body["body"]);
 		$data[] = $body;
 	}
-	return $line;
+}
+
+function escape($line, $escape)
+{
+	if ($escape === false)
+		return ($line === false);
+	elseif (trim($line) == "--$escape" or trim($line) == "--$escape--")
+		return true;
+	else
+		return false;
 }
 
