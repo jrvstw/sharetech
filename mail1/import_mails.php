@@ -1,7 +1,7 @@
 <?php
-include_once "parse_mail.php";
+include_once "tools/parse_mail.php";
 include_once "class/MailDBAgent.php";
-include_once "mail_analyzing_tools.php";
+include_once "tools/mail_analyzing_tools.php";
 
 /*
  * 1. setup
