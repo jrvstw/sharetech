@@ -10,8 +10,13 @@ function get_received_time($received)
 function decode($subject, $charset)
 {
 	if (substr($subject, 0, 1) == "=") {
-		if (substr($subject, 2, 6) == "gb2312")
-			$subject = substr_replace($subject, "gbk", 2, 6);
+		$subject = str_replace('=?gb2312?', '=?GBK?', $subject);
+		$subject = str_replace('=?GB2312?', '=?GBK?', $subject);
+		/*
+		$subject = str_replace('==?=', 'AA?=', $subject);
+		$subject = str_replace('=?=', 'A?=', $subject);
+		$subject = preg_replace('/\?=[\s]*=\?[^\?]+\?.\?/', '', $subject);
+		 */
 		//return mb_decode_mimeheader($subject);
 		return iconv_mime_decode($subject);
 	} elseif (substr($charset, 0, 4) == "big5") {
@@ -23,6 +28,8 @@ function decode($subject, $charset)
 
 function get_charset($header)
 {
+	if (empty($header["content-type"][0]))
+		return null;
 	$value = $header["content-type"][0];
 	if (empty($value))
 		return null;

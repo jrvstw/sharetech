@@ -27,6 +27,8 @@ class MailDBAgent extends DatabaseAgent
 		foreach ($writeData as $entry) {
 			$query = "";
 			foreach ($entry as $col => $field) {
+				if ($col == "path")
+					continue;
 				$field = str_replace("\\", "\\\\", $field);
 				$field = str_replace("'", "\'", $field);
 				$query .= "`" . $col . "`='" . $field . "', ";

@@ -14,9 +14,10 @@ function parse_mail($file)
 
 function parse_content(&$fp, &$data, $line, $escape)
 {
+	$data["header"] = array();
 	$line = parse_headers($fp, $data["header"], $line);
-	$boundary = get_boundary($data["header"]);
-	return parse_body($fp, $data["body"], $line, $escape, $boundary);
+	//$boundary = get_boundary($data["header"]);
+	//return parse_body($fp, $data["body"], $line, $escape, $boundary);
 }
 
 function parse_headers(&$fp, &$data, $line)
@@ -24,7 +25,7 @@ function parse_headers(&$fp, &$data, $line)
 	if (trim($line) == "") {
 		do {
 			$line = fgets($fp);
-		} while (trim($line) == "");
+		} while (trim($line) == "" and $line != false);
 		return $line;
 	}
 	$line = parse_header($fp, $data, $line);

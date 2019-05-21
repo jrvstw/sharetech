@@ -9,7 +9,7 @@ include_once "tools/mail_analyzing_tools.php";
 $mode    = $argv[1]; // [p|w|a]
 $path    = $argv[2];
 //$pattern = '/.eml$/';
-$pattern = '/^[0-9]{2,}$/';
+$pattern = '/^[0-9]{6,}$/';
 $mail_db = new MailDBAgent("work5", "jarvis", "localhost", "27050888");
 $table   = "mails";
 
@@ -26,6 +26,8 @@ parse_dir($path, $pattern, $output);
  */
 if ($mode == "p")
 	print_r($output);
+elseif ($mode == "n")
+	;
 elseif ($mode == "w")
 	$mail_db->overwrite($output, $table);
 elseif ($mode == "a")
@@ -62,18 +64,25 @@ function collect_info($file, &$output)
 	if (array_key_exists("x-mailer", $mail["header"])) {
 		$ua = "X-mailer";
 		$ua_value = $mail["header"]["x-mailer"][0];
-	}
-	if (array_key_exists("user-agent", $mail["header"])) {
+	} elseif (array_key_exists("user-agent", $mail["header"])) {
 		$ua = "User-agent";
-		$ua_value = $mailer["header"]["user-agent"][0];
+		$ua_value = $mail["header"]["user-agent"][0];
 	}
 	if (isset($ua)) {
 		echo "fetching... ";
-		$m_id = trim($mail["header"]["message-id"][0], "<>");
+		if (empty($mail["header"]["message-id"][0]))
+			$m_id = "";
+		else
+			$m_id = trim($mail["header"]["message-id"][0], "<>");
+
 		$epaper = verify_epaper($mail["header"]);
 		$is_epaper = (empty($epaper))? 0: 1;
-		$subject = decode($mail["header"]["subject"][0], get_charset($mail["header"]));
+		if (empty($mail["header"]["subject"][0]))
+			$subject = "";
+		else
+			$subject = decode($mail["header"]["subject"][0], get_charset($mail["header"]));
 		$output[] = array(
+			"file" => $file,
 			"user-agent" => $ua,
 			"ua-value" => $ua_value,
 			"message-id" => $m_id,
