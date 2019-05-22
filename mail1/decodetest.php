@@ -4,11 +4,13 @@
 $string = "=?UTF-8?Q?You_know_what's_hot_in_China??=";
 
 // notice:
-$string = "Subject: =?utf-8?B?QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6?=
- =?utf-8?B?uueNjumHkemAmuefpQ==?=";
+//$string = "Subject: =?utf-8?B?QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6?=
+ //=?utf-8?B?uueNjumHkemAmuefpQ==?=";
+//$string = "QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6uueNjumHkemAmuefpQ";
+//         C 049343  葉  秋  枝   0 4月  獎  金   -  個  人  獎  金  通  知
+/*
 $string = "Subject: =?utf-8?B?SjAwMzM1Oeadjua3keWNvyAwNOaciOeNjumHkSAtIOWAi+S6?=
  =?utf-8?B?uueNjumHkemAmuefpQ==?=";
-/*
 Subject: =?big5?B?qm+u5Krhtn2kRqFJqKvFb36sS7lDpm6uyaX6oUGyb6TiuqmoQr3gruSmbqVos0Kh?=
  =?big5?B?SQ==?=
 Subject: =?UTF-8?B?44CQ5oqY5YO55Yi455m86YCB6YCa55+l44CR5pyD5ZOh5pel5pyA6auY54++?=
@@ -19,7 +21,7 @@ Subject: =?UTF-8?B?44CQ5oqY5YO55Yi455m86YCB6YCa55+l44CR5pyD5ZOh5pel5pyA6auY54++?
  */
 
 //echo mb_convert_encoding($string, 'UTF-8', 'GB2312');
-//$string = base64_decode($string);
+//echo base64_decode($string);
 //echo iconv('GBK', 'UTF-8', $string);
 echo iconv_mime_decode($string);
 echo "\n";
