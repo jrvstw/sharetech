@@ -1,0 +1,70 @@
+
+--------------------------------
+##分析結果規格
+
+對於每封郵件檔，分析以下資訊：
+
+* user-agent:
+若郵件含有user-agent標頭，則記錄"User-agent"，否則若有x-mailer標頭，則記錄"X-mailer"。
+
+* ua-value:
+若user-agent有記錄，則ua-value欄位記錄其值。
+
+* message-id:
+記錄標頭為 message-id 的值，且去除最外層的角括號。
+
+* epaper:
+若郵件含"list-unsubscribe"標頭，則記錄"list-unsubscribe"，否則若含"precedence"標頭，且
+值為bulk或list，則記錄"Precedence: bulk" 或 "Precedence: list"。
+
+* is-epaper:
+若epaper欄位有值，則記錄為1，否則為0。
+
+* subject:
+記錄郵件的subject值。
+
+
+--------------------------------
+##資料庫規格
+
+table中每個欄位與其屬性說明如下：
+
++------------+---------------+------+-----+---------+----------------+
+| Field      | Type          | Null | Key | Default | Extra          |
++------------+---------------+------+-----+---------+----------------+
+| id         | int(8)        | NO   | PRI | NULL    | auto_increment |
+| user-agent | varchar(20)   | NO   | MUL | NULL    |                |
+| ua-value   | varchar(80)   | NO   | MUL | NULL    |                |
+| message-id | varchar(1000) | NO   | MUL | NULL    |                |
+| epaper     | varchar(100)  | YES  |     | NULL    |                |
+| is-epaper  | int(1)        | NO   | MUL | NULL    |                |
+| subject    | varchar(1000) | NO   |     | NULL    |                |
++------------+---------------+------+-----+---------+----------------+
++------------+-------------+------------+
+| Key_name   | Column_name | Index_type |
++------------+-------------+------------+
+| PRIMARY    | id          | BTREE      |
+| user-agent | user-agent  | BTREE      |
+| is-epaper  | is-epaper   | BTREE      |
+| message-id | message-id  | FULLTEXT   |
+| ua-value   | ua-value    | FULLTEXT   |
++------------+-------------+------------+
+
+
+--------------------------------
+##資料庫查詢語法範例
+
+select * from mails where `user-agent` = 'X-mailer';
+可以搜尋user-agent值為"X-mailer"的所有郵件。
+此查詢語法適用於其它index type為BTREE的欄位。
+
+select * from mails where (`message-id`) against('uniqlo');
+可以搜尋message-id中包含"uniqlo"的所有郵件。
+此查詢語法適用於其它index type為FULLTEXT的欄位。
+
+select * from mails where match (`message-id`) against ('uniqlo') and
+`user-agent` = 'X-mailer' and `is-epaper` = 0;
+可以搜尋message-id中包含"uniqlo"，且user-agent值為"X-mailer"，且is-paper值為0的
+所有郵件。
+
+
