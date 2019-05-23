@@ -5,14 +5,14 @@ function parse_mail($file)
 {
 	$fp = fopen($file, 'r');
 	$mail = array();
-	$line = fgets($fp);
+	$current_line = fgets($fp);
 	$escape = false;
-	parse_content($fp, $mail, $line, $escape);
+	parse_head_and_body($fp, $mail, $current_line, $escape);
 	fclose($fp);
 	return $mail;
 }
 
-function parse_content(&$fp, &$data, $line, $escape)
+function parse_head_and_body(&$fp, &$data, $line, $escape)
 {
 	$data["header"] = array();
 	$line = parse_headers($fp, $data["header"], $line);
@@ -63,7 +63,7 @@ function parse_body(&$fp, &$data, $line, $escape, $boundary)
 			$line = fgets($fp);
 		while (trim($line) != "--$boundary--") {
 			$line = fgets($fp);
-			$line = parse_content($fp, $data[], $line, $boundary);
+			$line = parse_head_and_body($fp, $data[], $line, $boundary);
 		}
 	}
 	while (escape($line, $escape) == false)

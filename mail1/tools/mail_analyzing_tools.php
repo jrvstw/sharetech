@@ -24,7 +24,6 @@ function decode($subject, $charset)
 		return $subject;
 	}
 }
- */
 
 function get_charset($header)
 {
@@ -38,6 +37,7 @@ function get_charset($header)
 		return null;
 	return strtolower(substr($value, $ptr + strlen("charset=")));
 }
+ */
 
 function get_boundary($header)
 {
