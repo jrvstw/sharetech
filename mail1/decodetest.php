@@ -1,35 +1,78 @@
 <?php
 
-// warning:
-//$string = "=?UTF-8?Q?You_know_what's_hot_in_China??=";
+$case["usual"] = "=?utf-8?B?QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6uueNjumHkemAmuefpQ==?=";
 
-// notice:
-//$string = "QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6uueNjumHkemAmuefpQ";
+$case["plain_text"] = "Fwd: SFExpress | Invoice | Shipping | Tracking |";
+
+$case["mixed"] = "Subject: =?utf-8?B?QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6uueNjumHkemAmuefpQ==?=";
+
+$case["q_mark_included"] = "=?UTF-8?Q?You_know_what's_hot_in_China??=";
+
+$case["big-5_encoded"] = "???????ī~?M?橱";
+
 //         C 049343  葉  秋  枝   0 4月  獎  金   -  個  人  獎  金  通  知
-/*
-$string = "Subject: =?utf-8?B?QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6?=
+$case["incomplete_byte_1"] = "=?utf-8?B?QzA0OTM0M+iRieeni+aenSAwNOaciOeNjumHkSAtIOWAi+S6?=
  =?utf-8?B?uueNjumHkemAmuefpQ==?=";
-$string = "Subject: =?utf-8?B?SjAwMzM1Oeadjua3keWNvyAwNOaciOeNjumHkSAtIOWAi+S6?=
- =?utf-8?B?uueNjumHkemAmuefpQ==?=";
-$string = "Subject: =?UTF-8?B?44CQ5oqY5YO55Yi455m86YCB6YCa55+l44CR5pyD5ZOh5pel5pyA6auY54++?=
+
+$case["incomplete_byte_2"] = "=?UTF-8?B?44CQ5oqY5YO55Yi455m86YCB6YCa55+l44CR5pyD5ZOh5pel5pyA6auY54++?=
  =?UTF-8?B?5oqYMjAw77yB5aSP5aSp5Yiw5LqG546p5rC06YCZ5qij546p5LiA5aSP77yB?=
  =?UTF-8?B?6YCg5Z6L5rWu5o6S44CA5rOz5rGg5pyA5pyJ5Z6LL+OAkOael+S4ieebiuWI?=
  =?UTF-8?B?t+WFt+e1hOOAke+8jeWkj+aXpeS/nemkiumdoOmAmee1hO+8gS/lqr3lqr3l?=
  =?UTF-8?B?ronlv4PluavmiYvjgJDml6XmnKzms6Hms6HnjonjgJE=?=";
-Subject: Fwd: SFExpress | Invoice | Shipping | Tracking |
- */
-$string = "Subject: =?big5?B?qm+u5Krhtn2kRqFJqKvFb36sS7lDpm6uyaX6oUGyb6TiuqmoQr3gruSmbqVos0Kh?=
- =?big5?B?SQ==?=";
 
-$string = "Subject: hihi";
+// org_spam_20190521/860/2019/05/03/957292
+$case["incomplete_byte_3"] = "=?UTF-8?B?UmU64piF6L2J6IG35r2u5b615YSq6LOq5Lq65omN54++5Zyo5Y+q6KaBMTgw?=
+ =?UTF-8?B?MOWFgyzoq4vmtL3lsIjlsazlvrXmiY3poafllY/kuIHntJToloflhY3ku5jo?=
+ =?UTF-8?B?srvlsIjnt5o6MDgwMC04ODExODY=?=";
 
 //echo mb_convert_encoding($string, 'UTF-8', 'GB2312');
 //echo base64_decode($string);
 //echo iconv('GBK', 'UTF-8', $string);
-echo decode_mime_string($string);
-echo "\n";
+foreach ($case as $key => $string)
+	echo $key . ":\n" . edecode_mime_string(combine($string)) . "\n\n";
+	//echo edecode_mime_string($string) . "\n\n";
 
-	function decode_mime_string($sSubject) {
+function combine($string)
+{
+	$pattern = '/\?=[\s]*=\?(.+\?.)\?/';
+	$matches = array();
+	preg_match_all($pattern, $string, $matches, PREG_OFFSET_CAPTURE);
+	for ($i = count($matches[0]) - 1; $i >= 0; $i--) {
+		$pos = $matches[0][$i][1];
+		$encoding = $matches[1][$i][0];
+		$left_part = substr($string, 0, $pos);
+		if (substr($left_part, -1) == "=")
+			continue;
+		if (strrpos($left_part, "=?") < strrpos($left_part, $encoding))
+			$string = substr_replace($string, "", $pos, strlen($matches[0][$i][0]));
+	}
+	return $string;
+}
+
+function decode_mime_string($subject)//, $charset)
+{
+		$subject = str_replace('=?gb2312?', '=?GBK?', $subject);
+		$subject = str_replace('=?GB2312?', '=?GBK?', $subject);
+		return iconv_mime_decode($subject);
+		//return iconv_mime_decode($subject, ICONV_MIME_DECODE_CONTINUE_ON_ERROR);
+	if (substr($subject, 0, 2) == "=?") {
+		$pattern = '/=\?([^\?]+)\?(.)\?(.+)\?=/';
+		$match = array();
+		preg_match($pattern, $subject, $match);
+		//$subject = str_replace('==?=', 'AA?=', $subject);
+		//$subject = str_replace('=?=', 'A?=', $subject);
+		//$subject = preg_replace('/\?=[\s]*=\?[^\?]+\?.\?/', '', $subject);
+		//return mb_decode_mimeheader($subject);
+	//} elseif (substr($charset, 0, 4) == "big5") {
+		//return iconv("BIG-5", "UTF-8", $subject);
+	} else {
+		return $subject;
+	}
+}
+
+	function edecode_mime_string($sSubject) {
+		if (substr(trim($sSubject), 0, 1) != "=")
+			return $sSubject;
 		$sDefaultCharset = "big5";
 		//$sDefaultCharset = $this->sDefaultCharset;
 		$sPattern = "/=\?([A-Z0-9\-_]+)\?([A-Z0-9\-]+)\?([\x01-\x7F]+?)\?=/i";
@@ -110,3 +153,4 @@ echo "\n";
 		}
 		return $sCharset;
 	}
+

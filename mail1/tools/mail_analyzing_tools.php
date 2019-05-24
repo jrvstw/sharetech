@@ -7,24 +7,44 @@ function get_received_time($received)
 	return $time;
 }
 
-/*
-function decode($subject, $charset)
+function combine($string)
 {
-	if (substr($subject, 0, 1) == "=") {
+	$pattern = '/\?=[\s]*=\?(.+\?.)\?/';
+	$matches = array();
+	preg_match_all($pattern, $string, $matches, PREG_OFFSET_CAPTURE);
+	for ($i = count($matches[0]) - 1; $i >= 0; $i--) {
+		$pos = $matches[0][$i][1];
+		$encoding = $matches[1][$i][0];
+		$left_part = substr($string, 0, $pos);
+		if (substr($left_part, -1) == "=")
+			continue;
+		if (strrpos($left_part, "=?") < strrpos($left_part, $encoding))
+			$string = substr_replace($string, "", $pos, strlen($matches[0][$i][0]));
+	}
+	return $string;
+}
+
+function decode_mime_string($subject)//, $charset)
+{
+	$subject = combine($subject);
+	return $subject;
 		$subject = str_replace('=?gb2312?', '=?GBK?', $subject);
 		$subject = str_replace('=?GB2312?', '=?GBK?', $subject);
+		return iconv_mime_decode($subject);
+		//return iconv_mime_decode($subject, ICONV_MIME_DECODE_CONTINUE_ON_ERROR);
+	if (substr($subject, 0, 2) == "=?") {
 		//$subject = str_replace('==?=', 'AA?=', $subject);
 		//$subject = str_replace('=?=', 'A?=', $subject);
 		//$subject = preg_replace('/\?=[\s]*=\?[^\?]+\?.\?/', '', $subject);
 		//return mb_decode_mimeheader($subject);
-		return iconv_mime_decode($subject);
-	} elseif (substr($charset, 0, 4) == "big5") {
-		return iconv("BIG-5", "UTF-8", $subject);
+	//} elseif (substr($charset, 0, 4) == "big5") {
+		//return iconv("BIG-5", "UTF-8", $subject);
 	} else {
 		return $subject;
 	}
 }
 
+/*
 function get_charset($header)
 {
 	if (empty($header["content-type"][0]))
@@ -60,7 +80,9 @@ print_r($received);
  */
 
 
-function decode_mime_string($sSubject) {
+function edecode_mime_string($sSubject) {
+	if (substr(trim($sSubject), 0, 1) == "=")
+		return $sSubject;
 	$sDefaultCharset = "big5";
 	//$sDefaultCharset = $this->sDefaultCharset;
 	$sPattern = "/=\?([A-Z0-9\-_]+)\?([A-Z0-9\-]+)\?([\x01-\x7F]+?)\?=/i";
@@ -141,3 +163,4 @@ function getCharsetAlias($sCharsetName) {
 	}
 	return $sCharset;
 }
+

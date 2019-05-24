@@ -73,7 +73,7 @@ function collect_info($file, &$output)
 		if (empty($mail["header"]["message-id"][0]))
 			$m_id = "";
 		else
-			$m_id = trim($mail["header"]["message-id"][0], "<>");
+			$m_id = $mail["header"]["message-id"][0];
 
 		$epaper = verify_epaper($mail["header"]);
 		$is_epaper = (empty($epaper))? 0: 1;
@@ -81,7 +81,8 @@ function collect_info($file, &$output)
 			$subject = "";
 		else
 			//$subject = decode($mail["header"]["subject"][0], get_charset($mail["header"]));
-			$subject = decode_mime_string($mail["header"]["subject"][0]);
+			//$subject = edecode_mime_string($mail["header"]["subject"][0]);
+			$subject = edecode_mime_string($mail["header"]["subject"][0]);
 		$output[] = array(
 			"file" => $file,
 			"user-agent" => $ua,
@@ -96,7 +97,6 @@ function collect_info($file, &$output)
 		echo "skipped";
 	}
 	echo "\n";
-	return $output;
 }
 
 function verify_epaper($header)
