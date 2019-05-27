@@ -7,9 +7,38 @@ function get_received_time($received)
 	return $time;
 }
 
-function combine($string)
+function decode_mixed_string($string, $charset)//, $charset)
 {
-	$pattern = '/\?=[\s]*=\?(.+\?.)\?/';
+	$string = concatenate_mime($string);
+	$pattern = '/=\?.*\?=/';
+	$matches = array();
+	preg_match_all($pattern, $string, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+	$output = "";
+	$pos = 0;
+	/*
+	foreach ($matches as $match) {
+		$string = substr_replace($string, decode_mime_string($match[0][0]), $match[0][1], strlen($match[0][0]));
+	}
+	return $string;
+	 */
+	foreach ($matches as $match) {
+		$encoded = $match[0][0];
+		$length  = $match[0][1];
+		$not_encoded = substr($string, $pos, $length - $pos);
+		$not_encoded = iconv($charset, 'UTF-8//IGNORE', $not_encoded);
+		$pos = $length + strlen($encoded);
+		$output .= $not_encoded;
+		$output .= substr_replace($string, decode_mime_string($encoded), $length, strlen($encoded));
+	}
+	$not_encoded = substr($string, $pos);
+	$not_encoded = iconv($charset, 'UTF-8//IGNORE', $not_encoded);
+	$output .= $not_encoded;
+	return $output;
+}
+
+function concatenate_mime($string)
+{
+	$pattern = '/\?=[\s]*=\?([^\?]+\?[^\?]+)\?/';
 	$matches = array();
 	preg_match_all($pattern, $string, $matches, PREG_OFFSET_CAPTURE);
 	for ($i = count($matches[0]) - 1; $i >= 0; $i--) {
@@ -24,22 +53,23 @@ function combine($string)
 	return $string;
 }
 
-function decode_mime_string($subject)//, $charset)
+function decode_mime_string($string)
 {
-	$subject = str_replace('=?gb2312?', '=?GBK?', $subject);
-	$subject = str_replace('=?GB2312?', '=?GBK?', $subject);
-	return iconv_mime_decode($subject);
-	//return iconv_mime_decode($subject, ICONV_MIME_DECODE_CONTINUE_ON_ERROR);
-	if (substr($subject, 0, 2) == "=?") {
-		//return mb_decode_mimeheader($subject);
-		//} elseif (substr($charset, 0, 4) == "big5") {
-		//return iconv("BIG-5", "UTF-8", $subject);
+	$pattern = '/^=\?([^\?]+)\?(.+)\?(.+)\?=$/';
+	$match = array();
+	if (preg_match($pattern, $string, $match) === false)
+		return $string;
+	if (strtolower($match[2]) == "q") {
+		$match[3] = str_replace("_", " ", $match[3]);
+		$match[3] = preg_replace("/=([A-F,0-9]{2})/i", "%\\1", $match[3]);
+		return iconv(getCharsetAlias($match[1]), "UTF-8//IGNORE", urldecode($match[3]));
 	} else {
-		return $subject;
+		$string = str_replace('=?gb2312?', '=?GBK?', $string);
+		$string = str_replace('=?GB2312?', '=?GBK?', $string);
+		return iconv_mime_decode($string);
 	}
 }
 
-/*
 function get_charset($header)
 {
 	if (empty($header["content-type"][0]))
@@ -52,7 +82,6 @@ function get_charset($header)
 		return null;
 	return strtolower(substr($value, $ptr + strlen("charset=")));
 }
- */
 
 function get_boundary($header)
 {

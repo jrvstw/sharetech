@@ -37,7 +37,7 @@ function parse_header(&$fp, &$data, $line)
 	// merge incomplete lines into $line.
 	$header = trim($line);
 	$line = fgets($fp);
-	while (preg_match('/^\s+[^\s]/', $line)) {
+	while (preg_match('/^[\s]+[^\s]/', $line)) {
 		$header .= " " . trim($line);
 		$line = fgets($fp);
 	}

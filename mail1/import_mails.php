@@ -82,7 +82,7 @@ function collect_info($file, &$output)
 		else
 			//$subject = decode($mail["header"]["subject"][0], get_charset($mail["header"]));
 			//$subject = edecode_mime_string($mail["header"]["subject"][0]);
-			$subject = edecode_mime_string($mail["header"]["subject"][0]);
+			$subject = decode_mixed_string($mail["header"]["subject"][0], get_charset($mail["header"]));
 		$output[] = array(
 			"file" => $file,
 			"user-agent" => $ua,
