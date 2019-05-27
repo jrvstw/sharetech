@@ -26,18 +26,13 @@ function combine($string)
 
 function decode_mime_string($subject)//, $charset)
 {
-	$subject = combine($subject);
-	return $subject;
-		$subject = str_replace('=?gb2312?', '=?GBK?', $subject);
-		$subject = str_replace('=?GB2312?', '=?GBK?', $subject);
-		return iconv_mime_decode($subject);
-		//return iconv_mime_decode($subject, ICONV_MIME_DECODE_CONTINUE_ON_ERROR);
+	$subject = str_replace('=?gb2312?', '=?GBK?', $subject);
+	$subject = str_replace('=?GB2312?', '=?GBK?', $subject);
+	return iconv_mime_decode($subject);
+	//return iconv_mime_decode($subject, ICONV_MIME_DECODE_CONTINUE_ON_ERROR);
 	if (substr($subject, 0, 2) == "=?") {
-		//$subject = str_replace('==?=', 'AA?=', $subject);
-		//$subject = str_replace('=?=', 'A?=', $subject);
-		//$subject = preg_replace('/\?=[\s]*=\?[^\?]+\?.\?/', '', $subject);
 		//return mb_decode_mimeheader($subject);
-	//} elseif (substr($charset, 0, 4) == "big5") {
+		//} elseif (substr($charset, 0, 4) == "big5") {
 		//return iconv("BIG-5", "UTF-8", $subject);
 	} else {
 		return $subject;
@@ -81,7 +76,7 @@ print_r($received);
 
 
 function edecode_mime_string($sSubject) {
-	if (substr(trim($sSubject), 0, 1) == "=")
+	if (substr(trim($sSubject), 0, 1) != "=")
 		return $sSubject;
 	$sDefaultCharset = "big5";
 	//$sDefaultCharset = $this->sDefaultCharset;
