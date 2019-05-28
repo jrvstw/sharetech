@@ -22,7 +22,7 @@ class DatabaseAgent
 			or die("Connection failed: " . $conn->connect_error);
 		$this->mysqli->select_db($this->dbName) or
 			die("connection to database failed");
-		$this->mysqli->query("set names utf8");
+		$this->mysqli->query("set names utf8mb4");
 	}
 
 	protected function close()

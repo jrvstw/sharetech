@@ -38,13 +38,13 @@ function parse_header(&$fp, &$data, $line)
 	$header = trim($line);
 	$line = fgets($fp);
 	while (preg_match('/^[\s]+[^\s]/', $line)) {
-		$header .= " " . trim($line);
+		$header .= " " . trim($line, " \t\n");
 		$line = fgets($fp);
 	}
 	// store data given the format $line = $data[$key]: $data["value"].
 	$delim = strpos($header, ":");
 	$key = strtolower(substr($header, 0, $delim));
-	$value = substr($header, $delim + 2);
+	$value = trim(substr($header, $delim + 1));
 	$data[$key][] = $value;
 	return $line;
 }

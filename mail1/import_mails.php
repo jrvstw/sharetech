@@ -8,6 +8,7 @@ include_once "tools/mail_analyzing_tools.php";
  */
 $mode    = $argv[1]; // [p|w|a]
 $path    = $argv[2];
+$category = isset($argv[3]) ? $argv[3]: null;
 //$pattern = '/.eml$/';
 $pattern = '/^[0-9]{6,}$/';
 $mail_db = new MailDBAgent("work5", "jarvis", "localhost", "27050888");
@@ -17,6 +18,7 @@ $table   = "mails";
 /*
  * 2. fetch
  */
+$path = rtrim($path, "/");
 $output = array();
 parse_dir($path, $pattern, $output);
 
@@ -24,14 +26,17 @@ parse_dir($path, $pattern, $output);
 /*
  * 3. output
  */
+$category = str_replace("\\", "\\\\", $category);
+$category = str_replace("'", "\'", $category);
+
 if ($mode == "p")
 	print_r($output);
 elseif ($mode == "n")
 	;
 elseif ($mode == "w")
-	$mail_db->overwrite($output, $table);
+	$mail_db->overwrite($output, $table, $category);
 elseif ($mode == "a")
-	$mail_db->append($output, $table);
+	$mail_db->append($output, $table, $category);
 else
 	exit("invalid format");
 
@@ -77,14 +82,12 @@ function collect_info($file, &$output)
 
 		$epaper = verify_epaper($mail["header"]);
 		$is_epaper = (empty($epaper))? 0: 1;
-		if (empty($mail["header"]["subject"][0]))
-			$subject = "";
+		if (isset($mail["header"]["subject"][0]))
+			$subject = decode_mixed_string($mail["header"]["subject"][0], detect_charset($mail));
 		else
-			//$subject = decode($mail["header"]["subject"][0], get_charset($mail["header"]));
-			//$subject = edecode_mime_string($mail["header"]["subject"][0]);
-			$subject = decode_mixed_string($mail["header"]["subject"][0], get_charset($mail["header"]));
+			$subject = "";
 		$output[] = array(
-			"file" => $file,
+			"path" => $file,
 			"user-agent" => $ua,
 			"ua-value" => $ua_value,
 			"message-id" => $m_id,

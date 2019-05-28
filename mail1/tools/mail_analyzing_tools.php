@@ -9,26 +9,30 @@ function get_received_time($received)
 
 function decode_mixed_string($string, $charset)//, $charset)
 {
+	if (empty($string))
+		return "";
 	$string = concatenate_mime($string);
-	$pattern = '/=\?.*\?=/';
 	$matches = array();
+	/*
+	$pos = strpos($string, "=?");
+	while ($pos !== false) {
+		$tmp[0][1] = strpos($string, "?=", $pos) + 2 - $pos;
+		$tmp[0][0] = substr($string, $pos, $tmp[0][1]);
+		$matches[] = $tmp;
+		$pos = strpos($string, "=?", $pos + $tmp[0][1]);
+	}
+	 */
+	$pattern = '/=\?[^\?]+\?[^\?]+\?.*\?=/U';
 	preg_match_all($pattern, $string, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
 	$output = "";
 	$pos = 0;
-	/*
-	foreach ($matches as $match) {
-		$string = substr_replace($string, decode_mime_string($match[0][0]), $match[0][1], strlen($match[0][0]));
-	}
-	return $string;
-	 */
 	foreach ($matches as $match) {
 		$encoded = $match[0][0];
-		$length  = $match[0][1];
-		$not_encoded = substr($string, $pos, $length - $pos);
+		$encoded_pos  = $match[0][1];
+		$not_encoded = substr($string, $pos, $encoded_pos - $pos);
 		$not_encoded = iconv($charset, 'UTF-8//IGNORE', $not_encoded);
-		$pos = $length + strlen($encoded);
-		$output .= $not_encoded;
-		$output .= substr_replace($string, decode_mime_string($encoded), $length, strlen($encoded));
+		$pos = $encoded_pos + strlen($encoded);
+		$output .= $not_encoded . decode_mime_string($encoded);
 	}
 	$not_encoded = substr($string, $pos);
 	$not_encoded = iconv($charset, 'UTF-8//IGNORE', $not_encoded);
@@ -55,7 +59,7 @@ function concatenate_mime($string)
 
 function decode_mime_string($string)
 {
-	$pattern = '/^=\?([^\?]+)\?(.+)\?(.+)\?=$/';
+	$pattern = '/^=\?([^\?]+)\?([^\?]+)\?(.+)\?=$/U';
 	$match = array();
 	if (preg_match($pattern, $string, $match) === false)
 		return $string;
@@ -66,21 +70,38 @@ function decode_mime_string($string)
 	} else {
 		$string = str_replace('=?gb2312?', '=?GBK?', $string);
 		$string = str_replace('=?GB2312?', '=?GBK?', $string);
+		$string = str_replace('=?ks_c_5601-1987?', '=?CP949?', $string);
 		return iconv_mime_decode($string);
 	}
 }
 
-function get_charset($header)
+function detect_charset($mail)
 {
-	if (empty($header["content-type"][0]))
-		return null;
-	$value = $header["content-type"][0];
-	if (empty($value))
-		return null;
-	$ptr = strpos($value, "charset=");
-	if ($ptr === false)
-		return null;
-	return strtolower(substr($value, $ptr + strlen("charset=")));
+
+	if (isset($mail["header"]["content-type"][0])) {
+		$field = $mail["header"]["content-type"][0];
+		$ptr = strpos($field, "charset=");
+		if ($ptr !== false) {
+			$start  = $ptr + strlen("charset=");
+			$length = strpos($field, ';', $start) - $start;
+			$value = trim(strtolower(substr($field, $start, $length)));
+			return getCharsetAlias($value);
+		}
+	}
+
+	if (isset($mail["header"]["subject"][0])) {
+		$subject = $mail["header"]["subject"][0];
+
+		$detect = mb_detect_encoding($subject, array('ASCII','BIG5','UTF-8','GB2312','GBK'));
+		if (empty($detect) == false)
+			return $detect;
+		$detect = mb_detect_encoding($subject, "auto");
+		if (empty($detect) == false)
+			return $detect;
+	}
+
+	return "BIG5";
+	return "UTF-8";
 }
 
 function get_boundary($header)
