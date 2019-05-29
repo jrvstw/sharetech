@@ -1,0 +1,9 @@
+<?php
+include_once "../class/";
+include_once "class/DatabaseAgent.php";
+$mail_db = new DatabaseAgent("work5", "jarvis", "localhost", "27050888");
+$table   = "mails";
+
+$array = $mail_db->getFromQuery("select * from `$table` order by `ua-value`");
+print_r($array);
+
