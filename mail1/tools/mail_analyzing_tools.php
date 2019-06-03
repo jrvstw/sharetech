@@ -70,6 +70,7 @@ function decode_mime_string($string)
 	} else {
 		$string = str_replace('=?gb2312?', '=?GBK?', $string);
 		$string = str_replace('=?GB2312?', '=?GBK?', $string);
+		$string = str_replace('=?MS950?', '=?BIG-5?', $string);
 		$string = str_replace('=?ks_c_5601-1987?', '=?CP949?', $string);
 		return iconv_mime_decode($string);
 	}
