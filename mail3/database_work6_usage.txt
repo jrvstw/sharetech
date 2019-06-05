@@ -1,0 +1,29 @@
+
+--------------------------------
+##分析結果規格
+
+--------------------------------
+##資料庫規格
+
+--------------------------------
+##資料庫查詢語法範例
+
+列出每一種mailer下每一種message-id的信件數量:
+
+	SELECT name, pattern, count(*)
+	FROM classification
+		JOIN mails ON classification.mail = mails.id
+		JOIN msgid ON classification.`msgid-pattern` = msgid.id
+		JOIN ua ON classification.`ua-name` = ua.id
+	GROUP BY ua.id, msgid.id
+
+
+依據mailer, message-id的排序列出信件主旨:
+
+	SELECT name, pattern, mails.subject
+	FROM classification
+		JOIN mails ON classification.mail = mails.id
+		JOIN msgid ON classification.`msgid-pattern` = msgid.id
+		JOIN ua ON classification.`ua-name` = ua.id
+	ORDER BY ua.id, msgid.id
+
