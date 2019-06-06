@@ -1,0 +1,179 @@
+
+--------------------------------
+## 資料庫規格
+--------------------------------
+
+Tables:
+- mails
+    擷取信件包含的所需資訊
+- ua
+    將 user-agent 的分類列出
+- msgid
+    將 message-id 的分類列出
+- classification
+    記錄 mails 每封信件所對應的 msgid 分類、 ua 分類和其它分析資訊
+
+
+--------------------------------
+## 各資料表規格
+--------------------------------
+
+mails:
++------------+---------------+------+-----+---------+----------------+
+| Field      | Type          | Null | Key | Default | Extra          |
++------------+---------------+------+-----+---------+----------------+
+| id         | int(8)        | NO   | PRI | NULL    | auto_increment |
+| path       | varchar(1000) | NO   |     | NULL    |                |
+| ua-key     | varchar(20)   | NO   |     | NULL    |                |
+| ua-value   | varchar(300)  | YES  | MUL | NULL    |                |
+| message-id | varchar(1000) | YES  | MUL | NULL    |                |
+| epaper     | varchar(100)  | YES  |     | NULL    |                |
+| mail-from  | varchar(1000) | YES  |     | NULL    |                |
+| subject    | varchar(1000) | YES  |     | NULL    |                |
++------------+---------------+------+-----+---------+----------------+
+
+ua:
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| id    | int(8)       | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(200) | NO   | UNI | NULL    |                |
+| class | varchar(20)  | NO   |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+
+msgid:
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| id      | int(8)       | NO   | PRI | NULL    | auto_increment |
+| pattern | varchar(300) | NO   | UNI | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+
+classification:
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| id            | int(8)       | NO   | PRI | NULL    | auto_increment |
+| mail          | int(8)       | YES  |     | NULL    |                |
+| ua-name       | int(8)       | YES  |     | NULL    |                |
+| msgid-pattern | int(8)       | YES  |     | NULL    |                |
+| match-type    | varchar(20)  | YES  |     | NULL    |                |
+| spam-class    | varchar(100) | YES  |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+
+
+--------------------------------
+## 各資料表說明
+--------------------------------
+
+----------------
+mails
+----------------
+
+- path:
+    記錄擷取時信件的位址，便於追蹤信件。
+
+- ua-key:
+    若郵件含有user-agent標頭，則記錄"User-agent"，否則若有x-mailer標頭，則記錄"X-mailer"。
+
+- ua-value:
+    若user-agent有記錄，則ua-value欄位記錄其值。
+
+- message-id:
+    記錄標頭為 message-id 的值，且去除最外層的角括號。
+
+- epaper:
+    若郵件含"list-unsubscribe"標頭，則記錄"list-unsubscribe"，否則若含"precedence"標頭，且 值為bulk或list，則記錄"Precedence: bulk" 或 "Precedence: list"。
+
+- mail-from:
+    記錄郵件的 from: 資料。
+
+- subject:
+    記錄郵件的subject值。
+
+----------------
+ua
+----------------
+
+- name:
+    將非亂數的 user-agent 列出。不同版本號是否合併則考量 message-id 分佈狀況。
+
+- class:
+    將 user-agent 分類
+
+
+----------------
+msgid
+----------------
+
+- pattern:
+    歸納 message-id 的種類。
+
+    大括號用來代表亂數字元，括號中的數字表示其長度，字母表示其字元類別，例如：
+
+        {} => 不固定字元的亂數，每個字元可能為大小寫英文字母或數字
+        {,15} => 長度介於1至15字元之間
+        {16} => 長度固定在16字元
+        {17,32} => 長度介於17至32字元間
+        {33,} => 長度大於33字元
+        {24|36} => 長度為24字元或36字元
+        {a} => 不固定字元的亂數，每個字元都是大小寫英文字母
+        {d} => 不固定字元的亂數，每個字元都是10進位制數字
+        {x} => 不固定字元的亂數，每個字元都是16進位制之數字
+        {8d} => 長度為8個字元的10進位制數字
+
+    中括號用來表示特殊文字，例如：
+
+        [8date] => 8個數字字元的日期表示
+        [6time] => 6個數字字元的時間表示
+        [word] => 表示非亂數的字串，且可能為使用者自訂之單字
+        [any] => 不固定長度，不限定字元，可能包含任何分隔符號
+
+    小括號用來作為註解，不代表任何文字
+
+    撰寫正規表示式篩選資料時需注意，例如{d}.{d}和[8date][6time].{5,7} 是不同類別，但 /[0-9]+\.[0-9]+/ 包含以上兩類的資料。
+
+
+----------------
+classification
+----------------
+
+- mail
+    信件的 id
+
+- ua-name
+    信件所屬的 user-agent 類別的 id
+
+- msgid-pattern
+    信件所屬的 message-id 類別的 id
+
+- match-type
+    信件中，message-id 和  from 兩者位址的符合程度
+
+- spam-class
+    是否為垃圾信的分類
+
+
+--------------------------------
+##資料庫查詢語法範例
+--------------------------------
+
+列出每一種 user-agent 下每一種 message-id 的信件數量:
+
+	SELECT name, pattern, count(*)
+	FROM classification
+		JOIN mails ON classification.mail            = mails.id
+		JOIN msgid ON classification.`msgid-pattern` = msgid.id
+		JOIN ua    ON classification.`ua-name`       = ua.id
+	GROUP BY name, pattern
+
+
+依據 user-agent, message-id 的排序列出信件主旨:
+
+	SELECT name, pattern, subject
+	FROM classification
+		JOIN mails ON classification.mail            = mails.id
+		JOIN msgid ON classification.`msgid-pattern` = msgid.id
+		JOIN ua    ON classification.`ua-name`       = ua.id
+	ORDER BY name, pattern, subject
+

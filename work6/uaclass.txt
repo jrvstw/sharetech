@@ -1,0 +1,307 @@
++-----+-----------------------------------------+-------+----------+
+| id  | name                                    | class | count(*) |
++-----+-----------------------------------------+-------+----------+
+|   3 | (alphabet + digit)                      | 3     |      744 |
+|   4 | (MIME string)                           |       |        1 |
+|   1 | (not classified)                        | 3     |      195 |
+| 408 | @nifty Webmail                          |       |        2 |
+|   8 | 104 OMS SYSTEM                          | 1     |      148 |
+| 407 | 12all.hu                                |       |        1 |
+|   9 | 15below                                 | 1     |       14 |
+|  10 | 360SecMail1                             |       |        1 |
+|  11 | AbvMail 1                               |       |        1 |
+|  12 | AbvMail 3                               |       |        1 |
+|  13 | ACEM                                    |       |       19 |
+|  14 | adToOne                                 |       |        1 |
+|  15 | AEM                                     |       |        2 |
+|  16 | Aerobile Mailer                         |       |        1 |
+|  17 | AfterLogic webmail client               | 0     |        5 |
+|  18 | Alimail-Mailagent                       | 0     |        4 |
+|  19 | AllinMail                               | 1     |      143 |
+|  20 | Amego Mailer                            |       |        1 |
+|  21 | Android                                 |       |        1 |
+|  22 | AntiSpam                                |       |        1 |
+|  23 | AOL                                     | 0     |      866 |
+| 395 | ApeosPort-IV C4475                      |       |       10 |
+|  24 | Apple Mail                              | 0     |       35 |
+|  25 | AQMS Tech                               |       |        1 |
+|  26 | ArmorX Webmail                          | 0     |      622 |
+|  27 | Artlogic                                |       |        1 |
+|  28 | aspNetEmail ver 3.5                     |       |        7 |
+|  29 | aspNetEmail ver 3.7.0.0                 |       |        1 |
+|  30 | aspNetEmail ver 3.7.0.19                | 0     |      175 |
+|  31 | AutoNewsV3                              |       |        1 |
+| 406 | baicai.cn                               |       |        4 |
+|  32 | Barca                                   | 0     |        4 |
+|  33 | BeHDv32                                 | 1     |       12 |
+|  34 | Blat                                    |       |        1 |
+|  35 | BM23 Mail                               | 1     |       16 |
+|  36 | BME Mailer                              | 1     |      382 |
+| 405 | BMI#2072                                |       |        2 |
+|  37 | BOX Solutions Web Mail                  | 0     |        4 |
+|  38 | Brick Street Connect                    | 1     |       63 |
+|  39 | By Redhat                               |       |       29 |
+|  40 | CakePHP Email                           |       |        1 |
+|  41 | Certain                                 |       |        5 |
+|  42 | CheetahMailer                           | 1     |       34 |
+|  43 | CHOLLIAN Mail                           |       |        2 |
+|  44 | class SMTPMail                          |       |       42 |
+|  45 | Cleancode.email                         |       |        2 |
+|  46 | ClickM@iler                             | 1     |       12 |
+|  47 | CodeIgniter                             | 1     |      144 |
+|  48 | COHL Webmail                            | 0     |        7 |
+| 404 | COMS/EA                                 |       |        1 |
+|  49 | ContactLab                              | 1     |        3 |
+|  50 | Coremail MTA server                     | 0     |       62 |
+|  51 | Coremail Webmail Server                 | 0     |       89 |
+|  52 | Coremail-Mailer                         | 0     |       11 |
+|  53 | CosseMail                               |       |        3 |
+|  54 | Create Send                             |       |        3 |
+|  55 | crsystem                                |       |        1 |
+|  56 | DACOM-MAILER                            |       |        2 |
+|  57 | david by Tobit.Software                 |       |        1 |
+|  58 | Default                                 |       |        7 |
+|  59 | dimedis Mail Subsystem                  |       |        4 |
+|  60 | DMD-MTA                                 |       |       26 |
+|  61 | dmDroid                                 |       |        8 |
+| 394 | dns.com.cn Webmail                      |       |        5 |
+|  62 | DocuCentre                              |       |        2 |
+|  63 | Doppler Mail                            | 1     |        3 |
+|  64 | DreamMail 4                             | 0     |       14 |
+|  65 | DreamMail5                              | 0     |        3 |
+|  66 | Drupal                                  |       |        7 |
+|  67 | EasyTRY Mailer                          |       |       82 |
+|  68 | ec-Messenger                            |       |        8 |
+|  69 | eCentry                                 | 1     |       34 |
+|  70 | Edel                                    |       |        1 |
+|  71 | edm.powerelay.com                       |       |        4 |
+|  72 | EDMAIL                                  |       |        2 |
+|  73 | eGroups Message Poster                  | 1     |      111 |
+|  74 | eGroups-EW                              |       |      274 |
+| 403 | EhooSend 2004c                          |       |        2 |
+|  75 | Email Express                           |       |        6 |
+|  76 | Email Marketer                          |       |        2 |
+|  77 | Email Sender                            | 1     |       13 |
+|  78 | Email Sending System                    | 1     |       48 |
+|  79 | emailsend                               |       |        2 |
+|  80 | eMsSMTP                                 |       |      104 |
+|  81 | EPaper BOY                              | 1     |       24 |
+|  82 | eSender                                 | 1     |       67 |
+|  83 | eYou Webmail                            |       |        1 |
+|  84 | eZ publish                              |       |        1 |
+|  85 | EZMailer                                |       |        8 |
+|  86 | FeedBlitz                               |       |        1 |
+|  87 | FM-Mailer                               |       |        1 |
+|  88 | Foxmail 3 - 5                           | 0     |      189 |
+|  89 | Foxmail 6 - 7                           | 0     |     1104 |
+|  90 | Foxmail_for_Mac                         | 0     |        7 |
+|  91 | FumaSoft SMTP Component                 |       |        6 |
+|  92 | gopaper@ggogo.com                       |       |        3 |
+|  93 | Hgiga                                   | 0     |        5 |
+|  94 | Hinet WebMail                           | 0     |       38 |
+|  95 | HiworksMail                             |       |        3 |
+|  96 | HM System                               | 0     |        3 |
+|  97 | HMail Webmail Server                    |       |        3 |
+|  98 | Horde Application Framework             | 0     |        7 |
+|  99 | IBM Notes Release                       | 0     |       14 |
+| 100 | IceWarp Mailer                          | 0     |        2 |
+| 101 | iCloud MailClient                       | 0     |      423 |
+| 102 | ICS SMTP Component                      |       |        1 |
+| 103 | iECCM Mailer                            |       |        2 |
+| 104 | IncrediMail                             |       |        2 |
+| 105 | INES-SendMail                           |       |        1 |
+| 106 | Infraware POLARIS Mobile Mailer         | 0     |       11 |
+| 107 | InScribe                                |       |        2 |
+| 108 | Internet Mail Service                   |       |       75 |
+| 109 | Internet Messaging Program 4            |       |        4 |
+| 110 | Internet Messaging Program 6            |       |        3 |
+| 111 | Inxmail                                 |       |        1 |
+| 112 | iPad Mail                               | 0     |        6 |
+| 113 | iPhone Mail                             | 0     |      110 |
+| 114 | ISIS Papyrus Server Mail                | 0     |        3 |
+| 115 | javamail                                |       |        2 |
+| 116 | JavaMailer                              |       |        2 |
+| 117 | JMail 4.2                               |       |        2 |
+| 118 | JMail 4.4 - 4.5                         | 1     |       42 |
+| 119 | Joinf MailSystem                        | 1     |       44 |
+| 120 | JsvMail                                 |       |        1 |
+| 121 | Juvlon                                  | 1     |        4 |
+| 122 | K-9 Mail                                |       |        1 |
+| 123 | K-Matrix                                |       |        1 |
+| 124 | Kana Connect                            | 1     |       51 |
+| 125 | Kerio Outlook Connector                 |       |        1 |
+| 126 | KingSurvey                              | 1     |      153 |
+| 396 | KMail                                   |       |        2 |
+| 127 | Leaf PHPMailer                          |       |       19 |
+| 128 | Linux System mail                       |       |        6 |
+| 129 | Linux Webmail                           | 0     |        8 |
+| 130 | LOTONtechEmail                          |       |       13 |
+| 131 | Lotus Domino                            | 0     |        3 |
+| 132 | Lotus Notes                             | 0     |       48 |
+| 133 | made from pascual                       |       |       59 |
+| 134 | MAIL                                    |       |        1 |
+| 135 | mail (GNU Mailutils)                    |       |        2 |
+| 136 | Mail.Ru Mailer                          |       |        1 |
+| 137 | MailAPI                                 |       |        1 |
+| 138 | MailBee.NET 11.1.0.576                  |       |        2 |
+| 139 | MailBee.NET 11.2.0.597                  |       |        3 |
+| 140 | MailBee.NET 8.0.4.428                   | 0     |        2 |
+| 141 | MailChimp Mailer                        | 1     |      617 |
+| 142 | MailDirect                              |       |        2 |
+| 143 | MailEDS                                 |       |        1 |
+| 144 | MailEnable WebMail.NET                  |       |        6 |
+| 145 | mailer                                  |       |       64 |
+| 146 | Mailer by Oracle UTL_SMTP               |       |       27 |
+| 147 | Mailer by Oracle UTL_SMTP for adult     |       |        2 |
+| 149 | MailiGo                                 | 3     |      628 |
+| 150 | Maillink Scheduler                      |       |        6 |
+| 151 | MailList King                           | 1     |       23 |
+| 152 | MailMasterMAC                           |       |        1 |
+| 153 | MailMasterPC                            | 1     |        7 |
+| 154 | MessageFocus                            | 1     |        7 |
+| 155 | MetaTrader                              |       |        1 |
+| 156 | Microsoft CDO for Windows               |       |      137 |
+| 157 | Microsoft Office Outlook 11             | 0     |       39 |
+| 158 | Microsoft Office Outlook 12.0           | 0     |      957 |
+| 159 | Microsoft Office Outlook, Build 11      | 0     |       26 |
+| 160 | Microsoft Outlook                       | 0     |        5 |
+| 161 | Microsoft Outlook 14                    | 0     |     1447 |
+| 162 | Microsoft Outlook 15                    | 0     |      424 |
+| 163 | Microsoft Outlook 16                    | 0     |      400 |
+| 263 | Microsoft Outlook Express               | 0     |        1 |
+| 264 | Microsoft Outlook Express 5.0           | 0     |       29 |
+| 265 | Microsoft Outlook Express 5.5           | 0     |       34 |
+| 266 | Microsoft Outlook Express 6.0           | 0     |     1151 |
+| 267 | Microsoft Outlook Express Macintosh     | 0     |        3 |
+| 268 | Microsoft Outlook IMO 9.0               | 0     |      139 |
+| 269 | Microsoft Outlook, Build 10.0           | 0     |       20 |
+| 270 | Microsoft Windows Live Mail 14          | 0     |       24 |
+| 271 | Microsoft Windows Live Mail 15          | 0     |       85 |
+| 272 | Microsoft Windows Live Mail 16          | 0     |      127 |
+| 273 | Microsoft Windows Live Mail 6.0         | 0     |       24 |
+| 274 | Microsoft-MacOutlook                    | 0     |       33 |
+| 275 | Microsoft-Outlook-Express-Macintosh     | 0     |        6 |
+| 276 | MIME HTML Composer                      |       |       91 |
+| 277 | MIME-tools 5.4                          |       |       16 |
+| 278 | MIME-tools 5.5                          |       |       92 |
+| 279 | MIME::Lite 2                            |       |      287 |
+| 280 | MIME::Lite 3                            |       |       18 |
+| 393 | Mozilla 3                               |       |        7 |
+| 281 | Mozilla 4                               | 0     |       57 |
+| 282 | Mozilla 5                               | 0     |     2288 |
+| 283 | mPOP Web-Mail                           |       |        2 |
+| 402 | mrgshandyman.com                        |       |        1 |
+| 284 | Ms-Webmail                              |       |        1 |
+| 285 | Mu-b                                    |       |       41 |
+| 286 | Mutt                                    |       |        2 |
+| 287 | My.com Mailer                           |       |        1 |
+| 288 | Mymailer                                |       |        3 |
+| 289 | Nate MIME interface                     |       |        1 |
+| 290 | NetEase Flash Mail                      |       |       73 |
+| 291 | NetEase iOS Mail                        |       |        1 |
+| 292 | Netpion Enterprise                      |       |        4 |
+| 293 | Netscape                                |       |        3 |
+| 294 | Nette Framework                         |       |        2 |
+| 295 | Network Scanner System                  |       |        6 |
+| 296 | Newsbit BitMailPRO                      |       |        2 |
+| 297 | Nipamail Mailer                         | 1     |        8 |
+| 298 | nlserver                                |       |      516 |
+| 299 | Nodemailer                              | 1     |       11 |
+| 300 | Novell GroupWise Internet Agent         |       |        1 |
+| 301 | OMICard                                 | 1     |      810 |
+| 302 | Ontap                                   |       |       14 |
+| 303 | Open-Xchange Mailer                     | 0     |        3 |
+| 304 | OpenEMM                                 | 1     |        7 |
+| 305 | Opera Mail                              | 0     |       35 |
+| 306 | Oracle Beehive Extensions for Outlook   |       |        1 |
+| 307 | Oracle Communications Messenger Express |       |        2 |
+| 308 | OTRS Mail Service                       |       |        5 |
+| 309 | PC_RICHMAIL                             |       |        2 |
+| 310 | PChome Online EXPRESS_EPAPER            | 1     |       17 |
+| 311 | PChome Online EXPRESS_SALES             | 1     |       63 |
+| 312 | Pegasus Mail for Windows                | 0     |       13 |
+| 313 | Perl Mail                               |       |        1 |
+| 314 | PHP                                     | 1     |      175 |
+| 316 | PHP Mailer                              | 1     |      670 |
+| 315 | phpBB3                                  |       |        1 |
+| 317 | Pocomail                                |       |        1 |
+| 318 | Postamt                                 |       |        1 |
+| 319 | PT Mediatama                            |       |        1 |
+| 320 | QQMail                                  | 0     |      154 |
+| 321 | QUALCOMM Windows Eudora                 | 0     |      120 |
+| 322 | Radica Intimate                         | 1     |      160 |
+| 323 | Rapid Email Sender                      |       |        1 |
+| 324 | Richmail_Webapp                         |       |        3 |
+| 325 | Rodriquezmail                           |       |        5 |
+| 326 | Roundcube Webmail                       | 0     |      499 |
+| 327 | Roving constant Contact 2012            | 1     |       15 |
+| 328 | s-nail                                  |       |        3 |
+| 329 | sailthru.com                            | 1     |       59 |
+| 330 | SAP NetWeaver                           | 1     |       12 |
+| 331 | SAP Web Application                     |       |        1 |
+| 398 | SEMS                                    |       |        2 |
+| 332 | SendBlaster                             |       |        1 |
+| 333 | SendGroup                               |       |        4 |
+| 334 | Sendinblue                              | 1     |       14 |
+| 335 | Sendy                                   | 1     |        5 |
+| 336 | ShareInvestor Email Engine              |       |        1 |
+| 397 | ShippingMail                            |       |        2 |
+| 337 | Siebel 2014                             | 1     |       18 |
+| 338 | Siebel 2017                             | 1     |       43 |
+| 339 | Siebel 8                                |       |        1 |
+| 401 | Sign-Up.to                              |       |        4 |
+| 340 | Sina WebMail                            | 0     |        5 |
+| 341 | Slip                                    |       |       13 |
+| 342 | Smart_Send                              |       |       42 |
+| 343 | SME JAVA Mailer                         |       |        1 |
+| 344 | SMTP COMPONENT                          |       |        4 |
+| 345 | SMTP Version 1.0                        |       |        1 |
+| 346 | smtpsend                                | 1     |      333 |
+| 347 | SPAMOUT MTA                             |       |        1 |
+| 348 | Spiral                                  |       |        6 |
+| 349 | SquirrelMail                            | 0     |        9 |
+| 350 | StarScan                                |       |        7 |
+| 351 | Summer Cart                             |       |        1 |
+| 352 | Sun Java                                |       |        1 |
+| 353 | SUPER MAILHUNTER                        | 1     |       36 |
+| 354 | Synermaxx! MAXXmailer                   |       |        1 |
+| 355 | TABSMailer                              |       |        5 |
+| 356 | TargetMail                              | 1     |        5 |
+| 357 | Taximail                                | 1     |       12 |
+| 358 | Thaicomponent                           |       |       10 |
+| 359 | The Bat!                                | 0     |      144 |
+| 360 | Thunderbird                             | 0     |        2 |
+| 400 | tlxsm 2.0                               |       |        3 |
+| 361 | TOMWEBMAIL                              |       |        1 |
+| 362 | TopWiz PowerBuilder                     |       |        2 |
+| 363 | TPExSERVICE                             |       |        2 |
+| 364 | Transignal SendMail                     |       |        2 |
+| 365 | TRICORN KREISEL                         |       |       11 |
+| 399 | uae@parisdesign.fr                      |       |        1 |
+| 366 | UQER AMITA MFA Composer                 | 1     |      503 |
+| 367 | Vallen e-Mailer                         |       |        1 |
+| 368 | WC Mail                                 | 1     |       15 |
+| 369 | weaver                                  |       |       32 |
+| 370 | Web Mail                                |       |        2 |
+| 371 | WEBMAIL                                 |       |        6 |
+| 392 | WebService YahooMailAndroidMobile       | 0     |        2 |
+| 374 | WebService YahooMailBasic               | 0     |       25 |
+| 373 | WebService YMailNorrin                  | 0     |       25 |
+| 375 | WhatCounts                              | 1     |       57 |
+| 376 | Winmail                                 |       |        2 |
+| 377 | Workspace Webmail                       |       |        4 |
+| 378 | WorldClient                             |       |        2 |
+| 379 | www.sendmail.in.th                      |       |        2 |
+| 380 | www.vladivostok-today.ru                |       |        1 |
+| 381 | X-SHARP Email DIAG System               |       |        4 |
+| 382 | XyzMailer                               |       |        5 |
+| 383 | YahooMailWebService                     | 0     |       66 |
+| 384 | Yamail                                  |       |        2 |
+| 385 | Yiwaixiao-EDM SendMailer2.0             |       |        1 |
+| 386 | yoyoclubs.ccom                          |       |        1 |
+| 387 | YW-mail                                 |       |        1 |
+| 388 | Zimbra                                  | 0     |       40 |
+| 389 | Zoho Campaigns                          |       |        2 |
+| 390 | ZuckMail                                |       |      275 |
+| 391 | ZxmeMail                                |       |        1 |
++-----+-----------------------------------------+-------+----------+
