@@ -149,6 +149,9 @@ classification
 
 - match-type
     信件中，message-id 和  from 兩者位址的符合程度
+        0 : 不同
+        1 : 相同
+        2 : 部分相同 (e.g. From domain : 是 edm.smtp.sendgrid.net ，MSGID : smtp.sendgrid.net ，只接受一個差異)
 
 - spam-class
     是否為垃圾信的分類
@@ -160,7 +163,7 @@ classification
 
 列出每一種 user-agent 下每一種 message-id 的信件數量:
 
-	SELECT name, pattern, count(*)
+	SELECT ua.name, msgid.pattern, count(*)
 	FROM classification
 		JOIN mails ON classification.mail            = mails.id
 		JOIN msgid ON classification.`msgid-pattern` = msgid.id
@@ -170,7 +173,7 @@ classification
 
 依據 user-agent, message-id 的排序列出信件主旨:
 
-	SELECT name, pattern, subject
+	SELECT ua.name, ua.class, msgid.pattern, `match-type`, subject
 	FROM classification
 		JOIN mails ON classification.mail            = mails.id
 		JOIN msgid ON classification.`msgid-pattern` = msgid.id
