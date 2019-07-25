@@ -22,7 +22,7 @@ mails:
 +------------+---------------+------+-----+---------+----------------+
 | Field      | Type          | Null | Key | Default | Extra          |
 +------------+---------------+------+-----+---------+----------------+
-| id         | int(8)        | NO   | PRI | NULL    | auto_increment |
+| mailid     | int(8)        | NO   | PRI | NULL    | auto_increment |
 | path       | varchar(1000) | NO   |     | NULL    |                |
 | ua-key     | varchar(20)   | NO   |     | NULL    |                |
 | ua-value   | varchar(300)  | YES  | MUL | NULL    |                |
@@ -36,27 +36,27 @@ ua:
 +-------+--------------+------+-----+---------+----------------+
 | Field | Type         | Null | Key | Default | Extra          |
 +-------+--------------+------+-----+---------+----------------+
-| id    | int(8)       | NO   | PRI | NULL    | auto_increment |
+| uaid  | int(8)       | NO   | PRI | NULL    | auto_increment |
 | name  | varchar(200) | NO   | UNI | NULL    |                |
 | class | varchar(20)  | NO   |     | NULL    |                |
 +-------+--------------+------+-----+---------+----------------+
 
 msgid:
-+---------+--------------+------+-----+---------+----------------+
-| Field   | Type         | Null | Key | Default | Extra          |
-+---------+--------------+------+-----+---------+----------------+
-| id      | int(8)       | NO   | PRI | NULL    | auto_increment |
-| pattern | varchar(300) | NO   | UNI | NULL    |                |
-+---------+--------------+------+-----+---------+----------------+
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| patternid | int(8)       | NO   | PRI | NULL    | auto_increment |
+| pattern   | varchar(300) | NO   | UNI | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
 
 classification:
 +---------------+--------------+------+-----+---------+----------------+
 | Field         | Type         | Null | Key | Default | Extra          |
 +---------------+--------------+------+-----+---------+----------------+
 | id            | int(8)       | NO   | PRI | NULL    | auto_increment |
-| mail          | int(8)       | YES  |     | NULL    |                |
-| ua-name       | int(8)       | YES  |     | NULL    |                |
-| msgid-pattern | int(8)       | YES  |     | NULL    |                |
+| mailid        | int(8)       | YES  |     | NULL    |                |
+| uaid          | int(8)       | YES  |     | NULL    |                |
+| patternid     | int(8)       | YES  |     | NULL    |                |
 | match-type    | varchar(20)  | YES  |     | NULL    |                |
 | spam-class    | varchar(100) | YES  |     | NULL    |                |
 +---------------+--------------+------+-----+---------+----------------+
@@ -110,7 +110,7 @@ ua
 msgid
 ----------------
 
-- pattern:
+- patternid:
     歸納 message-id 的種類。
 
     大括號用來代表亂數字元，括號中的數字表示其長度，字母表示其字元類別，例如：
@@ -142,13 +142,13 @@ msgid
 classification
 ----------------
 
-- mail
+- mailid
     信件的 id
 
-- ua-name
+- uaid
     信件所屬的 user-agent 類別的 id
 
-- msgid-pattern
+- patternid
     信件所屬的 message-id 類別的 id
 
 - match-type
@@ -169,18 +169,19 @@ classification
 
 	SELECT ua.name, msgid.pattern, count(*)
 	FROM classification
-		JOIN mails ON classification.mail            = mails.id
-		JOIN msgid ON classification.`msgid-pattern` = msgid.id
-		JOIN ua    ON classification.`ua-name`       = ua.id
+        JOIN mails USING (mailid)
+        JOIN msgid USING (patternid)
+        JOIN ua    USING (uaid)
 	GROUP BY name, pattern
+    ORDER BY count(*)
 
 
 依據 user-agent, message-id 的排序列出信件主旨:
 
 	SELECT ua.name, ua.class, msgid.pattern, `match-type`, subject
 	FROM classification
-		JOIN mails ON classification.mail            = mails.id
-		JOIN msgid ON classification.`msgid-pattern` = msgid.id
-		JOIN ua    ON classification.`ua-name`       = ua.id
+        JOIN mails USING (mailid)
+        JOIN msgid USING (patternid)
+        JOIN ua    USING (uaid)
 	ORDER BY name, pattern, subject
 

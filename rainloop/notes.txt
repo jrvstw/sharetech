@@ -1,0 +1,23 @@
+https://{rainloop}/?admin =>
+	bootstrap(App)
+		App.bootstart()
+
+AbstractBoot
+	-> AbstractApp
+		-> AdminApp
+		-> AppUser
+
+AbstractScreen
+	-> AbstractSettingsScreen
+        -> SettingsAdminScreen
+    -> AboutUserScreen
+    -> LoginUserScreen
+    -> MailBoxUserScreen
+
+https://{rainloop}/[?admin]
+	App = (?admin) ? AdminApp : AppUser
+	bootstrap(App)
+		App.bootstart();
+			Screen = (settingsGet('Auth')) ? SettingsAdminScreen : LoginAdminScreen
+			startScreens(Screen)
+
