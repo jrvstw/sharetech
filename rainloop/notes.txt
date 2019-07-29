@@ -14,6 +14,12 @@ AbstractScreen
     -> LoginUserScreen
     -> MailBoxUserScreen
 
+A bootstrap starts an app.
+An app starts a screen.
+A screen has views.
+
+AbstractView
+
 https://{rainloop}/[?admin]
 	App = (?admin) ? AdminApp : AppUser
 	bootstrap(App)
