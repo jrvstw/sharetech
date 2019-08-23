@@ -1,0 +1,76 @@
+<div class="popups">
+	<div class="modal b-contacts-create hide b-folder-create-content g-ui-user-select-none" data-bind="modal: modalVisibility">
+		<div>
+			<div class="modal-header">
+				<button type="button" class="close" data-bind="command: cancelCommand">&times;</button>
+				<h3>
+					<span class="i18n" data-i18n="POPUPS_CREATE_FOLDER/TITLE_CREATE_FOLDER"></span>
+				</h3>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<br />
+					<div class="control-group">
+						<label class="control-label">
+							<span class="i18n" data-i18n="POPUPS_CREATE_FOLDER/LABEL_NAME"></span>
+						</label>
+						<div class="controls">
+							<input type="text" class="uiInput inputName" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+								data-bind="textInput: folderName, hasfocus: folderName.focused, onEnter: createFolderCommand" />
+						</div>
+					</div>
+					<div class="control-group" data-bind="visible: 0 === addressbook()">
+						<label class="control-label">
+							<span class="i18n" data-i18n="POPUPS_CREATE_FOLDER/LABEL_PARENT"></span>
+						</label>
+						<div class="controls">
+							<select data-bind="options: parentFolderSelectList, value: selectedParentValue,
+								optionsText: 'name', optionsValue: 'id', optionsAfterRender: defautOptionsAfterRender"></select>
+						</div>
+					</div>
+					<br />
+					<div class="b-list-toolbar">
+						<div data-bind="component: {
+							name: 'Radio',
+							params: {
+								values: listSort,
+								value: sort,
+								inline: true
+							}
+						}"></div>
+						<span class="inline b-list-contact-search pull-right">
+							<input type="text" class="i18n span3 e-search" placeholder="Search" autocorrect="off" autocapitalize="off" data-i18n="[placeholder]CONTACTS/SEARCH_INPUT_PLACEHOLDER" data-bind="value: search" />
+							<i class="checkboxCkeckAll" data-bind="css: checkAll() ? (isIncompleteChecked() ? 'icon-checkbox-partial' : 'icon-checkbox-checked') : 'icon-checkbox-unchecked'"></i>
+						</span>
+					</div>
+					<br />
+					<div class="b-contact-list contact" data-bind="overlay: true">
+						<div class="listEmptyListLoading" data-bind="visible: loading()">
+							<span class="i18n" data-i18n="CONTACTS/LIST_LOADING"></span><span class="textLoadingAnimationD1">.</span><span class="textLoadingAnimationD2">.</span><span class="textLoadingAnimationD3">.</span>
+						</div>
+						<table class="table table-hover b-contact-list-table" data-bind="visible: !loading()">
+							<colgroup>
+								<col />
+								<col style="width: 50px" />
+								<col style="width: 1%" />
+							</colgroup>
+							<tbody data-bind="template: { name: 'PopupsAddressBookPermitItem', foreach: contacts }"></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a class="btn buttonCreate" data-bind="visible: 0 === addressbook(), command: createFolderCommand">
+					<i class="icon-folder-add"></i>
+					&nbsp;&nbsp;
+					<span class="i18n" data-i18n="POPUPS_CREATE_FOLDER/BUTTON_CREATE"></span>
+				</a>
+				<a class="btn buttonUpdate" data-bind="visible: 0 !== addressbook(), command: createFolderCommand">
+					<i class="icon-ok"></i>
+					&nbsp;&nbsp;
+					<span class="i18n" data-i18n="POPUPS_CREATE_FOLDER/BUTTON_UPDATE"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
